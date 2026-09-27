@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | CCSA — College Counselling Seat Allocator</title>
+  <meta name="description" content="Sign in to your CCSA account to access the College Counselling Seat Allocator.">
+  <link rel="stylesheet" href="css/auth-split.css">
+</head>
+<body>
+
+  <div class="auth-split-container">
+    <!-- ─── Left: Manual Sign In Form ─── -->
+    <div class="auth-left-col">
+      <!-- Brand Logo -->
+      <a href="landing.html" class="auth-header-brand">
+        <div class="auth-brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="auth-brand-text">
+          <h1>CCSA</h1>
+          <span>College Counselling Seat Allocator</span>
+        </div>
+      </a>
+
+      <!-- Title Group -->
+      <div class="auth-title-group">
+        <h2>Welcome <span class="highlight">Back</span></h2>
+        <p>Sign in to your CCSA account to continue</p>
+      </div>
+
+      <!-- Feedback Toast -->
+      <div id="authToast" class="auth-toast-msg"></div>
+
+      <!-- Manual Sign In Form -->
+      <form id="signInForm">
+        <!-- Email Address -->
+        <div class="form-group">
+          <div class="input-with-icon">
+            <span class="input-icon-lead">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </span>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="input-control" 
+              placeholder="Email address" 
+              required 
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <div class="input-with-icon">
+            <span class="input-icon-lead">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </span>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="input-control" 
+              placeholder="Password" 
+              required 
+              autocomplete="current-password"
+            >
+            <button type="button" class="password-toggle-btn" id="togglePasswordBtn" title="Toggle visibility">
+              <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-aux-row">
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="aux-link" id="btnForgotPass">Forgot password?</a>
+        </div>
+
+        <!-- Sign In Submit Button -->
+        <button type="submit" class="btn-auth-submit" id="btnSubmit">
+          <span>Sign In</span>
+          <span>&rarr;</span>
+        </button>
+      </form>
+
+      <!-- Switch to Sign Up -->
+      <div class="auth-switch-text">
+        Don't have an account? <a href="register.html">Sign Up</a>
+      </div>
+    </div>
+
+    <!-- ─── Right: White panel with full-bleed photo + smoke cursor effect ─── -->
+    <div class="auth-right-col" id="authRightPanel">
+      <!-- Full-bleed background photo -->
+      <img src="static/images/hero_campus.jpg" alt="University Campus" class="auth-bg-image">
+
+      <!-- Smoke cursor spotlight overlay -->
+      <div class="smoke-overlay" id="smokeOverlay"></div>
+
+      <!-- Custom cursor glow dot -->
+      <div class="cursor-dot" id="cursorDot"></div>
+
+      <!-- Back to Home -->
+      <div class="auth-top-nav">
+        <a href="landing.html" class="btn-back-home">&larr; Back to Home</a>
+      </div>
+
+      <!-- Handwritten Script Quote -->
+      <div class="auth-script-quote">
+        Access<br>Better Opportunities
+      </div>
+
+      <!-- Bottom Tagline Box -->
+      <div class="auth-bottom-card">
+        <p>&ldquo;One Account. Smarter Allocations. A Brighter Future.&rdquo;</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase CDN + Config + Auth Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    // Password toggle
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const passwordInput = document.getElementById('password');
+    if (toggleBtn && passwordInput && eyeIcon) {
+      toggleBtn.addEventListener('click', () => {
+        const isPass = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPass ? 'text' : 'password');
+        if (isPass) {
+          // Password is now plain text -> show Eye-Off icon (click to hide)
+          eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+        } else {
+          // Password is now hidden -> show Open Eye icon (click to reveal)
+          eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+        }
+      });
+    }
+
+    // Forgot password alert helper
+    document.getElementById('btnForgotPass').addEventListener('click', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        showToast('Please enter your email address first.', 'error');
+        return;
+      }
+      showToast('Password reset link will be sent if account exists for: ' + email, 'success');
+    });
+
+    // Form Submission
+    const form = document.getElementById('signInForm');
+    const toast = document.getElementById('authToast');
+    const btn = document.getElementById('btnSubmit');
+
+    function showToast(msg, type) {
+      toast.textContent = msg;
+      toast.className = 'auth-toast-msg ' + type;
+    }
+
+    // Pre-fill email and show notification if redirected from registration
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+      const regEmail = urlParams.get('email');
+      if (regEmail) {
+        document.getElementById('email').value = regEmail;
+      }
+      showToast('Account created successfully! Please sign in with your password.', 'success');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      toast.className = 'auth-toast-msg';
+      toast.style.display = 'none';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const remember = document.getElementById('rememberMe').checked;
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>Signing In…</span>';
+
+      try {
+        localStorage.setItem('ccsa_last_email', email);
+        await Auth.signIn(email, password, remember);
+        showToast('Sign in successful! Redirecting to dashboard…', 'success');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 800);
+      } catch (err) {
+        showToast(err.message || 'Login failed. Please check your credentials.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Sign In</span> <span>&rarr;</span>';
+      }
+    });
+  </script>
+
+  <!-- ─── Smoke Cursor Effect ─── -->
+  <script>
+    (function() {
+      const panel     = document.getElementById('authRightPanel');
+      const overlay   = document.getElementById('smokeOverlay');
+      const dot       = document.getElementById('cursorDot');
+      if (!panel || !overlay || !dot) return;
+
+      let animFrame;
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+
+      panel.addEventListener('mouseenter', () => {
+        dot.style.opacity = '1';
+      });
+
+      panel.addEventListener('mouseleave', () => {
+        dot.style.opacity = '0';
+        overlay.style.background = 'rgba(255,255,255,0.35)';
+      });
+
+      panel.addEventListener('mousemove', (e) => {
+        const rect = panel.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+      });
+
+      function animate() {
+        // Smooth interpolation for the glow dot
+        currentX += (targetX - currentX) * 0.12;
+        currentY += (targetY - currentY) * 0.12;
+
+        dot.style.left = currentX + 'px';
+        dot.style.top  = currentY + 'px';
+
+        // Smoke radial gradient centered on cursor — clear in center, foggy outward
+        overlay.style.background = `
+          radial-gradient(
+            circle 200px at ${currentX}px ${currentY}px,
+            rgba(255,255,255,0.0) 0%,
+            rgba(255,255,255,0.35) 45%,
+            rgba(255,255,255,0.72) 75%,
+            rgba(255,255,255,0.88) 100%
+          )
+        `;
+
+        animFrame = requestAnimationFrame(animate);
+      }
+
+      animate();
+    })();
+  </script>
+
+</body>
+</html>

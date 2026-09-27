@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CCSA — College Counselling Seat Allocator</title>
+  <meta name="description" content="A data-driven platform that allocates college seats based on student ranks and preferences using Greedy and Backtracking algorithms.">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+  <!-- ─── Hero Wrapper with Ambient Gradients ─── -->
+  <div class="hero-wrapper">
+    <div class="ambient-blob-1"></div>
+    <div class="ambient-blob-2"></div>
+
+    <!-- ─── Navbar ─── -->
+    <nav class="ccsa-navbar">
+      <!-- Logo -->
+      <a href="landing.html" class="logo-group">
+        <div class="logo-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="logo-text">
+          <h1>CCSA</h1>
+          <span>College Counselling Seat Allocator</span>
+        </div>
+      </a>
+
+      <!-- Center Menu -->
+      <ul class="nav-menu">
+        <li class="nav-item active"><a href="#home">Home</a></li>
+        <li class="nav-item"><a href="#about">About</a></li>
+        <li class="nav-item"><a href="#features">Features</a></li>
+        <li class="nav-item"><a href="#how-it-works">How It Works</a></li>
+      </ul>
+
+      <!-- Right Controls -->
+      <div class="nav-actions">
+        <!-- Dark / Light Theme Toggle -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+          <span id="themeIcon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </span>
+        </button>
+
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="index.html" class="btn-get-started">Get Started &rarr;</a>
+      </div>
+    </nav>
+
+    <!-- ─── Hero Section ─── -->
+    <header class="hero-container" id="home">
+      <!-- Left Column: Copy & CTAs -->
+      <div class="hero-text-col">
+        <div class="hero-top-badge">
+          <span class="badge-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </span>
+          <span>Algorithmic Approach</span>
+          <span class="badge-sep">|</span>
+          <span>Real Admission Data</span>
+          <span class="badge-sep">|</span>
+          <span>Smarter Allocation</span>
+        </div>
+
+        <h1 class="hero-brand-title">CCSA</h1>
+        <h2 class="hero-full-title">College Counselling<br>Seat Allocator</h2>
+
+        <p class="hero-description">
+          A data-driven platform that allocates college seats based on student ranks and preferences using Greedy and Backtracking algorithms.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="index.html" class="btn-hero-primary">
+            Get Started &rarr;
+          </a>
+          <a href="#demo-modal" class="btn-hero-secondary" id="btnOpenDemoModal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Watch Demo
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Visual Composition matching image -->
+      <div class="hero-visual">
+        <!-- Handwritten Script Note -->
+        <div class="script-quote">
+          Right Preferences.<br>
+          Smarter Allocation.<br>
+          Brighter Futures.
+        </div>
+
+        <!-- Campus Background Art -->
+        <div class="visual-backdrop-scene">
+          <img src="static/images/hero_campus.jpg" alt="University Campus" class="campus-bg-img" />
+        </div>
+
+        <!-- Floating 3D Dashboard Mockup Card -->
+        <div class="dashboard-mockup-card">
+          <!-- Mockup Top Bar -->
+          <div class="mockup-top-bar">
+            <div class="mockup-brand" style="display:flex; align-items:center; gap:0.4rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              CCSA
+            </div>
+            <div class="mockup-user-controls" style="display:flex; align-items:center; gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              <span style="background: #e0e7ff; color: #4338ca; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;">S</span>
+            </div>
+          </div>
+
+          <!-- Mockup Inner Grid -->
+          <div class="mockup-grid">
+            <!-- Mockup Sidebar -->
+            <div class="mockup-sidebar">
+              <div class="sidebar-item active">Dashboard</div>
+              <div class="sidebar-item">Students</div>
+              <div class="sidebar-item">Colleges</div>
+              <div class="sidebar-item">Run Allocation</div>
+              <div class="sidebar-item">Results</div>
+              <div class="sidebar-item">History</div>
+            </div>
+
+            <!-- Mockup Main Area -->
+            <div class="mockup-main">
+              <div class="mockup-section-title">Allocation Overview</div>
+
+              <!-- 4 Micro Stats -->
+              <div class="mockup-stats-row">
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-icon" style="color: #6366f1;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  </div>
+                  <div class="mockup-stat-val">1,000</div>
+                  <div class="mockup-stat-label">Students</div>
+                </div>
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-icon" style="color: #0284c7;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 8H2z"/></svg>
+                  </div>
+                  <div class="mockup-stat-val">50+</div>
+                  <div class="mockup-stat-label">Colleges</div>
+                </div>
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-icon" style="color: #4338ca;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  </div>
+                  <div class="mockup-stat-val">6+</div>
+                  <div class="mockup-stat-label">Branches</div>
+                </div>
+                <div class="mockup-stat-box">
+                  <div class="mockup-stat-icon" style="color: #059669;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10H12z"></path></svg>
+                  </div>
+                  <div class="mockup-stat-val">85%</div>
+                  <div class="mockup-stat-label">Allocated</div>
+                </div>
+              </div>
+
+              <!-- Micro Algorithm Selector & Mini Chart -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                <div class="mockup-algo-box">
+                  <div class="mockup-algo-title">Select Algorithm</div>
+                  <div class="mockup-radios">
+                    <label class="mockup-radio-item">
+                      <span class="radio-dot filled"></span>
+                      <span>Greedy Algorithm</span>
+                    </label>
+                    <label class="mockup-radio-item" style="color: var(--text-muted);">
+                      <span class="radio-dot"></span>
+                      <span>Backtracking Algorithm</span>
+                    </label>
+                  </div>
+                  <a href="index.html" class="btn-mockup-run" style="text-decoration: none; display: block; text-align: center;">
+                    Run Allocation &rarr;
+                  </a>
+                </div>
+
+                <!-- Allocation Results Chartlet -->
+                <div class="mockup-algo-box" style="display: flex; flex-direction: column; justify-content: space-between;">
+                  <div class="mockup-algo-title">Allocation Results</div>
+                  <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 50px; padding-bottom: 4px;">
+                    <div style="width: 10px; height: 35%; background: #38bdf8; border-radius: 3px;"></div>
+                    <div style="width: 10px; height: 60%; background: #60a5fa; border-radius: 3px;"></div>
+                    <div style="width: 10px; height: 85%; background: #818cf8; border-radius: 3px;"></div>
+                    <div style="width: 10px; height: 50%; background: #a78bfa; border-radius: 3px;"></div>
+                    <div style="width: 10px; height: 75%; background: #c084fc; border-radius: 3px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Stack of Academic Books Badge -->
+        <div class="books-stack-badge">
+          <div class="book-spine spine-1">RANKS</div>
+          <div class="book-spine spine-2">PREFERENCES</div>
+          <div class="book-spine spine-3">ALGORITHMS</div>
+          <div class="book-spine spine-4">BETTER OPPORTUNITIES</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- ─── Metrics Floating Bar ─── -->
+  <div class="metrics-bar-wrapper">
+    <div class="metrics-floating-bar">
+      <!-- Metric 1 -->
+      <div class="metric-col">
+        <div class="metric-icon-box icon-purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="metric-info">
+          <h3>1,000</h3>
+          <p>Students</p>
+        </div>
+      </div>
+
+      <!-- Metric 2 -->
+      <div class="metric-col">
+        <div class="metric-icon-box icon-blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 8H2z"/></svg>
+        </div>
+        <div class="metric-info">
+          <h3>50+</h3>
+          <p>Colleges</p>
+        </div>
+      </div>
+
+      <!-- Metric 3 -->
+      <div class="metric-col">
+        <div class="metric-icon-box icon-indigo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </div>
+        <div class="metric-info">
+          <h3>6+</h3>
+          <p>Branches</p>
+        </div>
+      </div>
+
+      <!-- Metric 4 -->
+      <div class="metric-col">
+        <div class="metric-icon-box icon-amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M14 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>
+        </div>
+        <div class="metric-info">
+          <h3>2</h3>
+          <p>DAA Algorithms</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Section: WHY CCSA? More Than Just Allocation ─── -->
+  <section class="content-section" id="features">
+    <div class="section-header-split">
+      <div>
+        <div class="why-tag">WHY CCSA?</div>
+        <h2 class="section-main-heading">More Than Just Allocation</h2>
+      </div>
+      <p class="section-split-desc">
+        CCSA combines real admission data with proven algorithmic techniques to provide a transparent, efficient and insightful seat allocation process.
+      </p>
+    </div>
+
+    <!-- 4 Clean Feature Cards matching screenshot -->
+    <div class="features-4-grid">
+      <!-- Card 1 -->
+      <div class="feature-box-clean">
+        <div class="clean-icon blue">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+        </div>
+        <h4>Real Admission Data</h4>
+        <p>Uses authentic student and college data for realistic allocation based on 2021 Telangana EAMCET Final Phase cutoffs.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-box-clean">
+        <div class="clean-icon purple">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </div>
+        <h4>DAA Algorithms</h4>
+        <p>Implements Greedy and Backtracking algorithms for optimal seat allocation and constraint satisfaction.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-box-clean">
+        <div class="clean-icon green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <h4>Interactive Results</h4>
+        <p>View detailed allocation results, statistics and college-wise analysis with instant search and category filtering.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-box-clean">
+        <div class="clean-icon orange">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <h4>Secure &amp; Reliable</h4>
+        <p>Built with modern web technologies, configurable seat matrix capacities, and official provisional allotment order letters.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section: About CCSA & Algorithmic Excellence ─── -->
+  <section class="content-section" id="about" style="border-top: 1px solid var(--border-subtle); padding-top: 4rem;">
+    <div class="section-header-split">
+      <div>
+        <div class="why-tag">ALGORITHMIC FOUNDATIONS</div>
+        <h2 class="section-main-heading">Greedy Choice vs Backtracking</h2>
+      </div>
+      <p class="section-split-desc">
+        Explore how Design and Analysis of Algorithms principles ensure strict meritocracy and optimal preference satisfaction in engineering admissions.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.2rem; box-shadow: var(--card-shadow);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(2, 132, 199, 0.1); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: var(--text-main);">Greedy Priority Allocation</h3>
+            <span style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">Merit-First Ascending Rank Order</span>
+          </div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+          Candidates are sorted strictly by EAMCET rank (Rank 1 first). The algorithm greedily assigns the candidate’s highest available preference where the candidate satisfies the category closing rank and seat capacity.
+        </p>
+        <div style="background: var(--bg-card-subtle); padding: 0.85rem 1rem; border-radius: 10px; font-size: 0.85rem; font-family: var(--font-mono); color: var(--primary);">
+          Time: O(N log N + N &middot; K) &bull; Space: O(C &middot; B + N)
+        </div>
+      </div>
+
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.2rem; box-shadow: var(--card-shadow);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"></circle><circle cx="6" cy="19" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="12" y1="8" x2="6" y2="16"></line><line x1="12" y1="8" x2="18" y2="16"></line></svg>
+          </div>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: var(--text-main);">Backtracking Constraint Search</h3>
+            <span style="font-size: 0.8rem; color: var(--accent-purple); font-weight: 700;">Recursive State-Space Exploration</span>
+          </div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+          Constructs a candidate decision tree. If capacity conflicts or reservation quota bounds block allocation, it backtracks, restores seat counts, and explores alternative preference paths to maximize global welfare.
+        </p>
+        <div style="background: var(--bg-card-subtle); padding: 0.85rem 1rem; border-radius: 10px; font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent-purple);">
+          Time: O(K^N pruned via cutoff bounds) &bull; Space: O(N)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section: How It Works ─── -->
+  <section class="content-section" id="how-it-works" style="border-top: 1px solid var(--border-subtle); padding-top: 4rem;">
+    <div class="section-header-split">
+      <div>
+        <div class="why-tag">STEP-BY-STEP PROCESS</div>
+        <h2 class="section-main-heading">How Seat Allocation Works</h2>
+      </div>
+      <p class="section-split-desc">
+        A seamless 4-step workflow modeled directly on the official Telangana State Council of Higher Education (TSCHE) counselling protocol.
+      </p>
+    </div>
+
+    <div class="how-it-works-grid">
+      <!-- Step 1 -->
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <h4>Choice-Filling</h4>
+        <p>Students submit prioritized college and branch preferences (Preferences 1 through 5) based on their academic interests.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <h4>Merit &amp; Cutoff Verification</h4>
+        <p>Student EAMCET Rank is compared against historical 2021 Final Phase closing cutoffs for their category (OC, BC-A/B/C/D/E, SC, ST, EWS).</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <h4>Algorithmic Allocation</h4>
+        <p>Greedy or Backtracking engine processes candidates, dynamically evaluating seat matrix availability and locking valid choices.</p>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-card">
+        <div class="step-number">04</div>
+        <h4>Allotment Orders</h4>
+        <p>Students receive provisional allotment results with printable verification slips including college details and security hash.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Final CTA ─── -->
+  <section style="max-width: 1260px; margin: 3rem auto; padding: 0 2rem;">
+    <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4338ca 100%); border-radius: 24px; padding: 3.5rem 3rem; text-align: center; color: #fff; box-shadow: 0 20px 50px rgba(30, 27, 75, 0.3);">
+      <h2 style="font-family: var(--font-heading); font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">
+        Experience Smarter College Allocation Today
+      </h2>
+      <p style="color: #c7d2fe; font-size: 1.1rem; max-width: 650px; margin: 0 auto 2rem;">
+        Dive into the interactive simulator with 1,000 real-world simulated TS EAMCET engineering candidates and 2021 closing cutoffs.
+      </p>
+      <a href="index.html" class="btn-hero-primary" style="background: #ffffff; color: #1e1b4b; font-size: 1.05rem; padding: 1rem 2.5rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+        Launch CCSA Dashboard &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer class="ccsa-footer">
+    <div class="footer-inner">
+      <div class="logo-group">
+        <div class="logo-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="logo-text">
+          <h1>CCSA</h1>
+          <span>College Counselling Seat Allocator</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 2rem; font-size: 0.9rem; font-weight: 600;">
+        <a href="#home" style="color: var(--text-muted); text-decoration: none;">Home</a>
+        <a href="#about" style="color: var(--text-muted); text-decoration: none;">About</a>
+        <a href="#features" style="color: var(--text-muted); text-decoration: none;">Features</a>
+        <a href="#how-it-works" style="color: var(--text-muted); text-decoration: none;">How It Works</a>
+        <a href="index.html" style="color: var(--primary); text-decoration: none;">Simulator</a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      &copy; 2026 CCSA &bull; College Counselling Seat Allocator &bull; DAA Project (Greedy &amp; Backtracking Algorithms)
+    </div>
+  </footer>
+
+  <!-- ─── Interactive Quick Demo Modal ─── -->
+  <div id="demoModal" class="demo-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); z-index:9999; align-items:center; justify-content:center; padding:1.5rem;">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; max-width:800px; width:100%; box-shadow:0 25px 60px rgba(0,0,0,0.5); overflow:hidden; animation:modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div style="padding:1.25rem 1.75rem; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; background:var(--bg-card-subtle);">
+        <div style="display:flex; align-items:center; gap:0.6rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+          <h3 style="font-family:var(--font-heading); font-size:1.15rem; font-weight:800; color:var(--text-main); margin:0;">CCSA Algorithm Workflow Simulation</h3>
+        </div>
+        <button id="closeDemoBtn" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); line-height:1;">&times;</button>
+      </div>
+      <div style="padding:1.75rem;">
+        <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem;">
+          Watch how student ranks, reservation categories, and college preferences are evaluated in real-time using Greedy &amp; Backtracking routines:
+        </p>
+        <div style="background:var(--bg-page); border:1px solid var(--border-subtle); border-radius:16px; padding:1.25rem; font-family:var(--font-mono); font-size:0.85rem; line-height:1.7;">
+          <div style="color:var(--accent-cyan); font-weight:700;">[1] Loading 1,000 TS EAMCET Candidates (Rank 412 to 248,510)... Done.</div>
+          <div style="color:var(--accent-purple); font-weight:700;">[2] Indexing 1,033 Official 2021 Final Phase Cutoff Thresholds... Done.</div>
+          <div style="color:var(--primary); font-weight:700;">[3] Simulating Candidate: STU_0001 (Rank #412 | Category: BC-B)</div>
+          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 1: JNTUH - CSE &rarr; Closing Rank 850 &rarr; <span style="color:#059669; font-weight:700;">Eligible &amp; Seat Allocated!</span></div>
+          <div style="color:var(--primary); font-weight:700; margin-top:0.4rem;">[4] Simulating Candidate: STU_0452 (Rank #42,100 | Category: OC)</div>
+          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 1: OUCE - CSE &rarr; Cutoff 1,200 &rarr; <span style="color:#ef4444;">Cutoff Exceeded</span></div>
+          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 2: CBIT - IT &rarr; Cutoff 8,500 &rarr; <span style="color:#ef4444;">Cutoff Exceeded</span></div>
+          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 3: VNRVJIET - ECE &rarr; Cutoff 44,800 &rarr; <span style="color:#059669; font-weight:700;">Cutoff Satisfied &rarr; Seat Reserved!</span></div>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; justify-content:flex-end; gap:1rem;">
+          <button id="closeDemoBtn2" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); color:var(--text-main); font-weight:600; padding:0.6rem 1.25rem; border-radius:10px; cursor:pointer;">Close</button>
+          <a href="index.html" class="btn-hero-primary" style="padding:0.6rem 1.5rem; font-size:0.9rem; text-decoration:none;">Open Full Simulator &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Theme Toggle & Interactive Script ─── -->
+  <script>
+    // Theme Switcher Logic
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlEl = document.documentElement;
+
+    // Check saved theme
+    const savedTheme = localStorage.getItem('ccsa_theme') || 'light';
+    applyTheme(savedTheme);
+
+    function applyTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      localStorage.setItem('ccsa_theme', theme);
+      if (theme === 'dark') {
+        themeIcon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+        themeBtn.title = 'Switch to Light Theme';
+      } else {
+        themeIcon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+        themeBtn.title = 'Switch to Dark Theme';
+      }
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const current = htmlEl.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+
+    // Watch Demo Modal Triggers
+    const demoModal = document.getElementById('demoModal');
+    const btnOpenDemo = document.getElementById('btnOpenDemoModal');
+    const btnCloseDemo = document.getElementById('closeDemoBtn');
+    const btnCloseDemo2 = document.getElementById('closeDemoBtn2');
+
+    if (btnOpenDemo && demoModal) {
+      btnOpenDemo.addEventListener('click', (e) => {
+        e.preventDefault();
+        demoModal.style.display = 'flex';
+      });
+      [btnCloseDemo, btnCloseDemo2].forEach(btn => {
+        if (btn) btn.addEventListener('click', () => demoModal.style.display = 'none');
+      });
+      demoModal.addEventListener('click', (e) => {
+        if (e.target === demoModal) demoModal.style.display = 'none';
+      });
+    }
+
+    // Smooth scroll for nav items and active pill highlighting
+    const navItems = document.querySelectorAll('.nav-item');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY + 100;
+      const sections = ['home', 'about', 'features', 'how-it-works'];
+      
+      sections.forEach((secId, idx) => {
+        const sec = document.getElementById(secId);
+        if (sec) {
+          const top = sec.offsetTop;
+          const height = sec.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            navItems.forEach(item => item.classList.remove('active'));
+            if (navItems[idx]) navItems[idx].classList.add('active');
+          }
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

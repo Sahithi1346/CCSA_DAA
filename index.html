@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CCSA — College Counselling Seat Allocator</title>
+  <meta name="description" content="Manage candidate data and run seat allocation algorithms based on rank and preferences.">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <!-- Supabase CDN (for auth session management) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+
+  <!-- ─── TOP NAVBAR ─── -->
+  <header class="ccsa-header">
+    <div class="navbar-inner">
+      <!-- Logo -->
+      <a href="index.html" class="brand-group">
+        <div class="brand-icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="brand-info">
+          <h1>CCSA</h1>
+          <span>College Counselling Seat Allocator</span>
+        </div>
+      </a>
+
+      <!-- Center Nav Pills (4 Tabs: Dashboard, Students, Colleges, Results) -->
+      <nav class="nav-pills" id="mainNavbarPills">
+        <button class="nav-pill-btn active" data-tab="tab-dashboard" id="btnNavDashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Dashboard
+        </button>
+        <button class="nav-pill-btn" data-tab="tab-students" id="btnNavStudents">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Students
+        </button>
+        <button class="nav-pill-btn" data-tab="tab-colleges" id="btnNavColleges">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Colleges
+        </button>
+        <button class="nav-pill-btn" data-tab="tab-results" id="btnNavResults">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Results
+        </button>
+      </nav>
+
+      <!-- Right Controls -->
+      <div class="nav-right-controls">
+        <button class="icon-bell-btn" title="System Notifications" aria-label="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="bell-badge"></span>
+        </button>
+
+        <!-- User Profile Dropdown -->
+        <div class="user-menu-wrapper">
+          <button class="user-profile-btn" id="userProfileDropdownBtn">
+            <div class="user-avatar-circle" id="navUserAvatarInitial">A</div>
+            <span class="user-label-text" id="navUserRoleLabel">Admin ⌵</span>
+          </button>
+          <div class="user-dropdown-menu" id="userDropdownMenu">
+            <div class="user-dropdown-header">
+              <p id="dropdownUserNameTitle">Active Session</p>
+              <span id="dropdownUserEmail">admin@ccsa.ac.in</span>
+            </div>
+            <a href="landing.html" class="user-dropdown-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              Landing Page
+            </a>
+            <button class="user-dropdown-item danger" id="btnSignOutAction">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── PAGE MAIN CONTAINER ─── -->
+  <main class="dashboard-content">
+
+    <!-- ═════════════════════════════════════════════════════════
+         VIEW 1: DASHBOARD
+         ═════════════════════════════════════════════════════════ -->
+    <section class="view-section active" id="tab-dashboard">
+      <!-- Hero / Welcome Banner -->
+      <div class="dashboard-hero-banner">
+        <div class="banner-top-content">
+          <div class="banner-text-side">
+            <h2>Welcome back, <span class="highlight-role" id="heroUserRoleName">Admin!</span></h2>
+            <p>Manage student data and run seat allocation algorithms efficiently.</p>
+          </div>
+          <div class="banner-illustration-side"></div>
+        </div>
+
+        <!-- 4 Stat Cards: Colleges, Branches, Total Seats, Algorithms -->
+        <div class="stat-cards-grid">
+          <!-- Card 1: Colleges -->
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="stat-info-text">
+              <span class="stat-number-val" id="statTotalColleges">52</span>
+              <span class="stat-label-title">Colleges</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Branches -->
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="stat-info-text">
+              <span class="stat-number-val" id="statTotalBranches">6</span>
+              <span class="stat-label-title">Branches</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Total Seats -->
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="11" rx="2"/><line x1="5" y1="15" x2="19" y2="15"/><path d="M7 19v2M17 19v2"/></svg>
+            </div>
+            <div class="stat-info-text">
+              <span class="stat-number-val" id="statTotalSeats">12,460</span>
+              <span class="stat-label-title">Total Seats</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Algorithms -->
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="stat-info-text">
+              <span class="stat-number-val" id="statTotalAlgorithms">2</span>
+              <span class="stat-label-title">Algorithms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Middle Row: Quick Actions & Last Allocation Summary -->
+      <div class="dashboard-two-col-grid">
+        <!-- Left: Quick Actions -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3 class="panel-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              Quick Actions
+            </h3>
+            <p class="panel-subtitle">Manage data and run allocation algorithms.</p>
+          </div>
+
+          <div class="quick-actions-grid">
+            <!-- 1. View Students -->
+            <div class="quick-action-item" id="qaViewStudents">
+              <div class="quick-action-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div class="quick-action-texts">
+                <h4>View Students</h4>
+                <p>View and manage student data</p>
+              </div>
+            </div>
+
+            <!-- 2. View Colleges -->
+            <div class="quick-action-item" id="qaViewColleges">
+              <div class="quick-action-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              </div>
+              <div class="quick-action-texts">
+                <h4>View Colleges</h4>
+                <p>Manage colleges and branches</p>
+              </div>
+            </div>
+
+            <!-- 3. Run Allocation (All Students) -->
+            <div class="quick-action-item" id="qaRunAllocation">
+              <div class="quick-action-icon" style="background: #EDE9FE; color: #6366F1;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </div>
+              <div class="quick-action-texts">
+                <h4>Run Allocation</h4>
+                <p>Allocate seats for complete dataset</p>
+              </div>
+            </div>
+
+            <!-- 4. View Results -->
+            <div class="quick-action-item" id="qaViewResults">
+              <div class="quick-action-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              </div>
+              <div class="quick-action-texts">
+                <h4>View Results</h4>
+                <p>Check allocation results</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: System Status -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3 class="panel-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              System Status
+            </h3>
+          </div>
+
+          <div class="system-status-list">
+            <div class="status-check-row">
+              <div class="status-check-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span>Student Data Ready</span>
+            </div>
+            <div class="status-check-row">
+              <div class="status-check-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span>College Data Ready</span>
+            </div>
+            <div class="status-check-row">
+              <div class="status-check-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span>Cutoff Data Ready</span>
+            </div>
+            <div class="status-check-row">
+              <div class="status-check-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span>Seat Configuration Ready</span>
+            </div>
+          </div>
+
+          <button class="btn-view-results-soft" id="btnDashboardViewResults">
+            View Results &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         VIEW 2: STUDENTS (Split View: Table + Details & Allocation)
+         ═════════════════════════════════════════════════════════ -->
+    <section class="view-section" id="tab-students">
+      <div class="page-top-header">
+        <div class="page-title-block" style="display: flex; align-items: center; gap: 0.75rem;">
+          <button class="btn-page-back" id="btnStudentsPageBack" style="display: none;" title="Back to Student List">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Back</span>
+          </button>
+          <div>
+            <h2>Students</h2>
+            <p>View and manage candidate data. Select students to run allocation or allocate individually.</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center;" id="studentsHeaderActions">
+          <button class="btn-primary-action" id="btnOpenAddStudentModal" style="background: #059669;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Student
+          </button>
+          <button class="btn-secondary-action" id="btnCancelStudentSelection" style="display: none;">
+            Cancel
+          </button>
+          <button class="btn-primary-action" id="btnRunAllocationSelectedStudents">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span id="btnRunAllocationSelectedLabel">Run Allocation for Selected Students</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="students-split-layout">
+        <!-- Left: Students Table -->
+        <div class="panel-card">
+          <!-- Search Bar -->
+          <div class="search-controls-bar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" class="search-input-field" id="studentsSearchInput" placeholder="Search by name, rank or student ID...">
+            </div>
+            <button class="btn-search-submit" id="btnSearchStudents">Search</button>
+          </div>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="custom-data-table">
+              <thead>
+                <tr>
+                  <th class="col-student-select" style="display: none; width: 44px; text-align: center;">
+                    <input type="checkbox" id="selectAllStudentsCheckbox" class="custom-checkbox-style" title="Select All on Current Page">
+                  </th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Rank</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="table-pagination-footer">
+            <span class="pagination-count-label" id="studentsCountLabel">Showing 1 to 8 of 1,000 students</span>
+            <div class="pagination-nav-btns" id="studentsPagination">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Student Details & Individual Allocation Panel (hidden by default) -->
+        <div class="student-detail-panel hidden" id="studentDetailPanel">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <button class="btn-detail-back" id="btnStudentDetailBack" title="Back to Student List">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <span>Back</span>
+              </button>
+              <h3 class="panel-title" style="margin-bottom: 0;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Student Details & Allocation
+              </h3>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="batch-badge-indicator" id="batchStudentIndicator" style="display: none;">Student 1 of 3</span>
+              <button class="batch-nav-btn" id="btnBatchExitBack" style="display: none; padding: 0.25rem 0.65rem; font-size: 0.75rem; background: #64748B; color: #fff; border-radius: 6px;" title="Back to Students">← Back</button>
+            </div>
+          </div>
+
+          <!-- Details Grid -->
+          <div class="detail-info-grid">
+            <div class="detail-info-item">
+              <span>Student ID</span>
+              <strong id="detailStudentId">S001</strong>
+            </div>
+            <div class="detail-info-item">
+              <span>Name</span>
+              <strong id="detailStudentName">Aarav Sharma</strong>
+            </div>
+            <div class="detail-info-item">
+              <span>EAMCET Rank</span>
+              <strong id="detailStudentRank">12,450</strong>
+            </div>
+            <div class="detail-info-item">
+              <span>Category</span>
+              <strong id="detailStudentCategory">BC-B</strong>
+            </div>
+          </div>
+
+          <!-- Preferences List -->
+          <div>
+            <span style="font-size: 0.82rem; font-weight: 700; color: #0F172A; display: block; margin-bottom: 0.5rem;">Preferences (in order)</span>
+            <ul class="pref-ordered-list" id="detailPrefList">
+              <li class="pref-ordered-item"><span class="pref-index-num">1</span> JNTU Hyderabad - CSE</li>
+              <li class="pref-ordered-item"><span class="pref-index-num">2</span> JNTU Hyderabad - ECE</li>
+              <li class="pref-ordered-item"><span class="pref-index-num">3</span> Osmania University - CSE</li>
+              <li class="pref-ordered-item"><span class="pref-index-num">4</span> CBIT Hyderabad - CSE</li>
+              <li class="pref-ordered-item"><span class="pref-index-num">5</span> VNR VJIET - CSE</li>
+            </ul>
+          </div>
+
+          <!-- Algorithm Selector -->
+          <div>
+            <span style="font-size: 0.82rem; font-weight: 700; color: #0F172A; display: block; margin-bottom: 0.5rem;">Select Algorithm</span>
+            <div class="algo-radio-group-compact">
+              <label class="algo-compact-label">
+                <input type="radio" name="individualAlgo" value="greedy" checked id="radioIndivGreedy">
+                <span>⚡ Greedy</span>
+              </label>
+              <label class="algo-compact-label">
+                <input type="radio" name="individualAlgo" value="backtracking" id="radioIndivBacktrack">
+                <span>🔄 Backtracking</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Allocate Seat for This Student CTA -->
+          <button class="btn-primary-action" id="btnAllocateThisStudent" style="width: 100%; justify-content: center; padding: 0.75rem;">
+            Allocate Seat for This Student
+          </button>
+
+          <!-- Step-by-Step Allocation Process & Result -->
+          <div id="individualProcessBox" style="display: none;">
+            <span style="font-size: 0.82rem; font-weight: 700; color: #0F172A; display: block; margin-bottom: 0.4rem;">Allocation Process</span>
+            <div class="allocation-steps-container" id="allocationStepsContainer"></div>
+          </div>
+
+          <!-- Allocation Result Card -->
+          <div class="alloc-result-box" id="individualResultCard" style="display: none;">
+            <div class="alloc-result-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Allocation Result
+            </div>
+            <div class="alloc-result-details">
+              <div>
+                <span style="color: #64748B; font-size: 0.75rem;">Allocated College:</span>
+                <strong style="display: block; color: #0F172A;" id="resultAllocCollege">JNTU Hyderabad</strong>
+              </div>
+              <div>
+                <span style="color: #64748B; font-size: 0.75rem;">Branch:</span>
+                <strong style="display: block; color: #0F172A;" id="resultAllocBranch">ECE</strong>
+              </div>
+              <div>
+                <span style="color: #64748B; font-size: 0.75rem;">Preference Number:</span>
+                <strong style="display: block; color: #0F172A;" id="resultAllocPrefNum">2</strong>
+              </div>
+              <div>
+                <span style="color: #64748B; font-size: 0.75rem;">Closing Rank (<span id="resultCategoryLabel">BC-B</span>):</span>
+                <strong style="display: block; color: #0F172A;" id="resultAllocClosing">18,600</strong>
+              </div>
+            </div>
+            <div style="margin-top: 0.35rem;">
+              <span class="badge-tag allocated" id="resultStatusBadge">Allocated</span>
+            </div>
+          </div>
+
+          <!-- Batch Navigation / Pagination Footer (for selected students) -->
+          <div class="batch-pagination-bar" id="batchStudentPagination" style="display: none;">
+            <button class="batch-nav-btn" id="batchBackBtn" title="Back to Students">← Back</button>
+            <button class="batch-nav-btn" id="batchPrevBtn" title="Previous Student">&lt; Prev</button>
+            <div class="batch-page-pills" id="batchPageNumbers">
+              <!-- Dynamically populated page buttons 1, 2, 3, 4... -->
+            </div>
+            <button class="batch-nav-btn" id="batchNextBtn" title="Next Student">Next &gt;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         VIEW 3: COLLEGES & BRANCHES
+         ═════════════════════════════════════════════════════════ -->
+    <section class="view-section" id="tab-colleges">
+      <div class="page-top-header">
+        <div class="page-title-block">
+          <h2>Colleges & Branches</h2>
+          <p>View colleges, branches and seat capacities.</p>
+        </div>
+        <button class="btn-primary-action" id="btnOpenAddCollegeModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Add College
+        </button>
+      </div>
+
+      <div class="panel-card">
+        <!-- Search Bar -->
+        <div class="search-controls-bar">
+          <div class="search-input-wrapper">
+            <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="search-input-field" id="collegesSearchInput" placeholder="Search by college name or branch...">
+          </div>
+          <button class="btn-search-submit" id="btnSearchColleges">Search</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="custom-data-table">
+            <thead>
+              <tr>
+                <th>College ID</th>
+                <th>College Name</th>
+                <th>Branch</th>
+                <th>Seat Capacity</th>
+                <th>Closing Rank (2021)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="collegesTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Footer -->
+        <div class="table-pagination-footer">
+          <span class="pagination-count-label" id="collegesCountLabel">Showing 1 to 8 of 52 colleges</span>
+          <div class="pagination-nav-btns" id="collegesPagination">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         VIEW 4: ALLOCATION RESULTS
+         ═════════════════════════════════════════════════════════ -->
+    <section class="view-section" id="tab-results">
+      <div class="page-top-header">
+        <div class="page-title-block">
+          <h2>Allocation Results</h2>
+          <p>View seat allocation results for all students or search for a specific student.</p>
+        </div>
+        <button class="btn-primary-action" id="btnDownloadResults">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download Results
+        </button>
+      </div>
+
+
+
+      <div class="panel-card">
+        <!-- Search Bar -->
+        <div class="search-controls-bar">
+          <div class="search-input-wrapper">
+            <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="search-input-field" id="resultsSearchInput" placeholder="Search by name, rank, student ID or college...">
+          </div>
+          <button class="btn-search-submit" id="btnSearchResults">Search</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="custom-data-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Rank</th>
+                <th>Category</th>
+                <th>Allocated College</th>
+                <th>Branch</th>
+                <th>Preference</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Footer -->
+        <div class="table-pagination-footer">
+          <span class="pagination-count-label" id="resultsCountLabel">Showing 1 to 8 of 1,000 students</span>
+          <div class="pagination-nav-btns" id="resultsPagination">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── MODAL: ADD COLLEGE ─── -->
+  <div class="modal-overlay" id="addCollegeModal">
+    <div class="modal-window">
+      <div class="modal-window-header">
+        <h3>Add College & Branch</h3>
+        <button class="modal-close-btn" id="btnCancelAddCollege">&times;</button>
+      </div>
+      <form id="formAddCollege">
+        <div class="modal-window-body">
+          <div class="form-group-field">
+            <label for="newCollegeName">College Name *</label>
+            <input type="text" id="newCollegeName" class="form-input-text" placeholder="e.g. Anurag University" required>
+          </div>
+          <div class="form-group-field">
+            <label for="newCollegeBranch">Branch *</label>
+            <select id="newCollegeBranch" class="form-select-style" required>
+              <option value="CSE" selected>CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="IT">IT</option>
+              <option value="AI&DS">AI&DS</option>
+              <option value="MECH">MECH</option>
+            </select>
+          </div>
+          <div class="form-group-field">
+            <label for="newCollegeCapacity">Seat Capacity *</label>
+            <input type="number" id="newCollegeCapacity" class="form-input-text" placeholder="120" min="1" max="500" required>
+          </div>
+          <div class="form-group-field">
+            <label for="newCollegeClosing">Closing Cutoff Rank</label>
+            <input type="number" id="newCollegeClosing" class="form-input-text" placeholder="25000" min="1" max="250000" required>
+          </div>
+        </div>
+        <div class="modal-window-footer">
+          <button type="button" class="btn-secondary-action" id="btnCancelAddCollegeModal">Cancel</button>
+          <button type="submit" class="btn-primary-action">Save College</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: ADD STUDENT ─── -->
+  <div class="modal-overlay" id="addStudentModal">
+    <div class="modal-window">
+      <div class="modal-window-header">
+        <h3>Add Student</h3>
+        <button class="modal-close-btn" id="btnCancelAddStudent">&times;</button>
+      </div>
+      <form id="formAddStudent">
+        <div class="modal-window-body">
+          <div class="form-group-field">
+            <label for="newStudentName">Student Name *</label>
+            <input type="text" id="newStudentName" class="form-input-text" placeholder="e.g. Ravi Teja" required>
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentRank">EAMCET Rank *</label>
+            <input type="number" id="newStudentRank" class="form-input-text" placeholder="e.g. 15000" min="1" max="250000" required>
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentCategory">Category *</label>
+            <select id="newStudentCategory" class="form-select-style" required>
+              <option value="OC">OC</option>
+              <option value="BC-A">BC-A</option>
+              <option value="BC-B" selected>BC-B</option>
+              <option value="BC-C">BC-C</option>
+              <option value="BC-D">BC-D</option>
+              <option value="BC-E">BC-E</option>
+              <option value="SC">SC</option>
+              <option value="ST">ST</option>
+              <option value="EWS">EWS</option>
+            </select>
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentPref1">Preference 1 *</label>
+            <input type="text" id="newStudentPref1" class="form-input-text" placeholder="e.g. JNTU Hyderabad - CSE" required>
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentPref2">Preference 2</label>
+            <input type="text" id="newStudentPref2" class="form-input-text" placeholder="e.g. Osmania University - ECE">
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentPref3">Preference 3</label>
+            <input type="text" id="newStudentPref3" class="form-input-text" placeholder="e.g. CBIT Hyderabad - CSE">
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentPref4">Preference 4</label>
+            <input type="text" id="newStudentPref4" class="form-input-text" placeholder="e.g. VNR VJIET - IT">
+          </div>
+          <div class="form-group-field">
+            <label for="newStudentPref5">Preference 5</label>
+            <input type="text" id="newStudentPref5" class="form-input-text" placeholder="e.g. Vasavi College - CSE">
+          </div>
+        </div>
+        <div class="modal-window-footer">
+          <button type="button" class="btn-secondary-action" id="btnCancelAddStudentModal">Cancel</button>
+          <button type="submit" class="btn-primary-action" style="background: #059669;">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ─── MODAL: VIEW COLLEGE DETAILS ─── -->
+  <div class="modal-overlay" id="genericDetailModal">
+    <div class="modal-window">
+      <div class="modal-window-header">
+        <h3 id="genericDetailTitle">Record Details</h3>
+        <button class="modal-close-btn" id="btnCloseDetailModal">&times;</button>
+      </div>
+      <div class="modal-window-body" id="genericDetailBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard JavaScript App Controller -->
+  <script src="js/dashboard-app.js"></script>
+</body>
+</html>

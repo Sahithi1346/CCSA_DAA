@@ -1,0 +1,10 @@
+{
+  "name": "college-allocator",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.1"
+  }
+}
