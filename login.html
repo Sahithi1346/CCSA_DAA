@@ -166,6 +166,7 @@
     function showToast(msg, type) {
       toast.textContent = msg;
       toast.className = 'auth-toast-msg ' + type;
+      toast.style.display = 'block';
     }
 
     // Pre-fill email and show notification if redirected from registration
@@ -182,6 +183,7 @@
       e.preventDefault();
       toast.className = 'auth-toast-msg';
       toast.style.display = 'none';
+      toast.textContent = '';
 
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
