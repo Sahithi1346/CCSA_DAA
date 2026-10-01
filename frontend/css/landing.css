@@ -244,7 +244,7 @@ body {
   border-color: var(--primary);
 }
 
-.btn-login {
+.btn-login, .btn-signup {
   background: transparent;
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -256,7 +256,7 @@ body {
   transition: all var(--transition-fast);
 }
 
-.btn-login:hover {
+.btn-login:hover, .btn-signup:hover {
   background: var(--bg-card);
   border-color: var(--primary);
   color: var(--primary);

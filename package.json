@@ -1,8 +1,11 @@
 {
   "name": "college-allocator",
   "version": "1.0.0",
+  "description": "CCSA - College Counselling Seat Allocator",
   "scripts": {
-    "start": "node server.js"
+    "start": "node backend/server.js",
+    "start:node": "node backend/server.js",
+    "start:flask": "python backend/app.py"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1"

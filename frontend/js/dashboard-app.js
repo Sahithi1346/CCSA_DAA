@@ -738,6 +738,205 @@
     renderStudentsTab();
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // MANUAL COLLEGE PREFERENCES CONTROLLER
+  // ─────────────────────────────────────────────────────────────
+  function getUniqueCollegeNames() {
+    if (!app.colleges || !app.colleges.length) return [];
+    const set = new Set(app.colleges.map(c => c.name));
+    return Array.from(set).sort();
+  }
+
+  function getBranchesForCollege(collegeName) {
+    if (!collegeName || !app.colleges) return [];
+    const matching = app.colleges.filter(c => c.name.trim().toLowerCase() === collegeName.trim().toLowerCase());
+    const set = new Set(matching.map(c => c.branch));
+    return Array.from(set).sort();
+  }
+
+  function renderManualPreferenceRows(student) {
+    const container = document.getElementById('manualPrefRows');
+    if (!container) return;
+
+    const uniqueColleges = getUniqueCollegeNames();
+    const prefs = (student && student.preferences && student.preferences.length > 0)
+      ? student.preferences
+      : [''];
+
+    container.innerHTML = '';
+    const rowsCount = Math.min(prefs.length, 5);
+
+    for (let i = 0; i < rowsCount; i++) {
+      const pStr = prefs[i] || '';
+      const parts = pStr.split(' - ');
+      const selCol = parts[0] ? parts[0].trim() : '';
+      const selBr  = parts[1] ? parts[1].trim() : '';
+
+      const availableBranches = selCol ? getBranchesForCollege(selCol) : [];
+
+      const colOptions = uniqueColleges.map(name =>
+        `<option value="${name}" ${name.toLowerCase() === selCol.toLowerCase() ? 'selected' : ''}>${name}</option>`
+      ).join('');
+
+      const brOptions = availableBranches.map(br =>
+        `<option value="${br}" ${br.toLowerCase() === selBr.toLowerCase() ? 'selected' : ''}>${br}</option>`
+      ).join('');
+
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'pref-row-item';
+      rowDiv.dataset.prefIndex = i;
+      rowDiv.innerHTML = `
+        <span class="pref-index-badge">${i + 1}</span>
+        <select class="form-select-style pref-college-select" onchange="CCSA.handleCollegeChange(this)">
+          <option value="">Select College ▼</option>
+          ${colOptions}
+        </select>
+        <select class="form-select-style pref-branch-select" ${selCol ? '' : 'disabled'} onchange="CCSA.handleBranchChange(this)">
+          <option value="">Select Branch ▼</option>
+          ${brOptions}
+        </select>
+        <button type="button" class="btn-remove-pref" onclick="CCSA.removePrefRow(this)" title="Remove Preference">&times;</button>
+      `;
+
+      container.appendChild(rowDiv);
+    }
+
+    updateAddPrefBtnState();
+    validateAndSyncPreferences();
+  }
+
+  function addPreferenceRow() {
+    const container = document.getElementById('manualPrefRows');
+    if (!container) return;
+
+    const currentRows = container.querySelectorAll('.pref-row-item');
+    if (currentRows.length >= 5) return;
+
+    const uniqueColleges = getUniqueCollegeNames();
+    const i = currentRows.length;
+
+    const colOptions = uniqueColleges.map(name =>
+      `<option value="${name}">${name}</option>`
+    ).join('');
+
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'pref-row-item';
+    rowDiv.dataset.prefIndex = i;
+    rowDiv.innerHTML = `
+      <span class="pref-index-badge">${i + 1}</span>
+      <select class="form-select-style pref-college-select" onchange="CCSA.handleCollegeChange(this)">
+        <option value="">Select College ▼</option>
+        ${colOptions}
+      </select>
+      <select class="form-select-style pref-branch-select" disabled onchange="CCSA.handleBranchChange(this)">
+        <option value="">Select Branch ▼</option>
+      </select>
+      <button type="button" class="btn-remove-pref" onclick="CCSA.removePrefRow(this)" title="Remove Preference">&times;</button>
+    `;
+
+    container.appendChild(rowDiv);
+    reindexPreferenceRows();
+    updateAddPrefBtnState();
+    validateAndSyncPreferences();
+  }
+
+  function reindexPreferenceRows() {
+    const container = document.getElementById('manualPrefRows');
+    if (!container) return;
+    const rows = container.querySelectorAll('.pref-row-item');
+    if (rows.length === 0) {
+      addPreferenceRow();
+      return;
+    }
+    rows.forEach((row, idx) => {
+      row.dataset.prefIndex = idx;
+      const badge = row.querySelector('.pref-index-badge');
+      if (badge) badge.textContent = idx + 1;
+    });
+    updateAddPrefBtnState();
+  }
+
+  function updateAddPrefBtnState() {
+    const container = document.getElementById('manualPrefRows');
+    const addBtn = document.getElementById('btnAddPrefRowBtn');
+    const badge = document.getElementById('prefCountBadge');
+    if (!container || !addBtn) return;
+
+    const count = container.querySelectorAll('.pref-row-item').length;
+    if (badge) badge.textContent = `${count} / 5`;
+    if (count >= 5) {
+      addBtn.style.display = 'none';
+    } else {
+      addBtn.style.display = 'flex';
+    }
+  }
+
+  function validateAndSyncPreferences() {
+    const container = document.getElementById('manualPrefRows');
+    const valMsg = document.getElementById('prefValidationMsg');
+    const runBtn = document.getElementById('btnShowAlgoChoices');
+    if (!container) return false;
+
+    const rows = container.querySelectorAll('.pref-row-item');
+    const seen = new Set();
+    let hasDuplicate = false;
+    let validCount = 0;
+
+    rows.forEach(row => {
+      const colSelect = row.querySelector('.pref-college-select');
+      const brSelect  = row.querySelector('.pref-branch-select');
+      if (colSelect) colSelect.classList.remove('input-error');
+      if (brSelect) brSelect.classList.remove('input-error');
+
+      const col = colSelect ? colSelect.value.trim() : '';
+      const br  = brSelect ? brSelect.value.trim() : '';
+
+      if (col && br) {
+        const key = `${col.toLowerCase()}||${br.toLowerCase()}`;
+        if (seen.has(key)) {
+          hasDuplicate = true;
+          if (colSelect) colSelect.classList.add('input-error');
+          if (brSelect) brSelect.classList.add('input-error');
+        } else {
+          seen.add(key);
+          validCount++;
+        }
+      }
+    });
+
+    if (hasDuplicate) {
+      if (valMsg) valMsg.style.display = 'flex';
+      if (runBtn) runBtn.disabled = true;
+      return false;
+    } else {
+      if (valMsg) valMsg.style.display = 'none';
+      if (validCount >= 1) {
+        if (runBtn) runBtn.disabled = false;
+        return true;
+      } else {
+        if (runBtn) runBtn.disabled = true;
+        return false;
+      }
+    }
+  }
+
+  function getManualPreferencesFromUi() {
+    const container = document.getElementById('manualPrefRows');
+    if (!container) return [];
+    const rows = container.querySelectorAll('.pref-row-item');
+    const prefs = [];
+    rows.forEach(row => {
+      const colSelect = row.querySelector('.pref-college-select');
+      const brSelect  = row.querySelector('.pref-branch-select');
+      const col = colSelect ? colSelect.value.trim() : '';
+      const br  = brSelect ? brSelect.value.trim() : '';
+      if (col && br) {
+        prefs.push(`${col} - ${br}`);
+      }
+    });
+    return prefs;
+  }
+
   // Populate Right Student Details & Allocation Panel
   function populateStudentDetailPanel(studentId, isBatch = false) {
     const s = app.students.find(item => item.id === studentId);
@@ -759,20 +958,27 @@
     const nameEl = document.getElementById('detailStudentName');
     const rankEl = document.getElementById('detailStudentRank');
     const catEl = document.getElementById('detailStudentCategory');
-    const prefList = document.getElementById('detailPrefList');
 
     if (idEl) idEl.textContent = s.id;
     if (nameEl) nameEl.textContent = s.name;
     if (rankEl) rankEl.textContent = s.rank.toLocaleString();
     if (catEl) catEl.textContent = s.category;
 
-    if (prefList) {
-      prefList.innerHTML = s.preferences.map((p, idx) => `
-        <li class="pref-ordered-item">
-          <span class="pref-index-num">${idx + 1}</span>
-          <span>${p}</span>
-        </li>
-      `).join('');
+    // Render manual college preference rows for this student
+    renderManualPreferenceRows(s);
+
+    // Hide algorithm choice area by default until Run Algorithm button clicked
+    const algoArea = document.getElementById('algoChoiceArea');
+    if (algoArea) algoArea.style.display = 'none';
+
+    const btnShowAlgo = document.getElementById('btnShowAlgoChoices');
+    if (btnShowAlgo) {
+      btnShowAlgo.onclick = () => {
+        if (algoArea) {
+          const isHidden = (algoArea.style.display === 'none' || !algoArea.style.display);
+          algoArea.style.display = isHidden ? 'flex' : 'none';
+        }
+      };
     }
 
     // Cancel any running step animation timer
@@ -1008,6 +1214,13 @@
     const isBatchMode = (typeof isBatch === 'boolean') ? isBatch : false;
     const s = app.students.find(item => item.id === app.selectedStudentId);
     if (!s) return;
+
+    // Sync manually selected preferences from UI into student object before running allocation
+    const manualPrefs = getManualPreferencesFromUi();
+    if (manualPrefs && manualPrefs.length > 0) {
+      s.preferences = manualPrefs;
+      app.saveStudents();
+    }
 
     if (window._allocationTimer) {
       clearTimeout(window._allocationTimer);
@@ -1641,7 +1854,11 @@
 
     // Single student allocate CTA
     const btnIndivAlloc = document.getElementById('btnAllocateThisStudent');
-    if (btnIndivAlloc) btnIndivAlloc.addEventListener('click', allocateSingleStudent);
+    if (btnIndivAlloc) btnIndivAlloc.addEventListener('click', () => allocateSingleStudent(false));
+
+    // Add Preference Row button
+    const btnAddPrefRow = document.getElementById('btnAddPrefRowBtn');
+    if (btnAddPrefRow) btnAddPrefRow.addEventListener('click', addPreferenceRow);
 
     // Back to Student List buttons
     const btnDetailBack = document.getElementById('btnStudentDetailBack');
@@ -1719,15 +1936,53 @@
       document.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
     }
 
-    // Logout
+    // Logout with Confirmation Modal
     const btnSignOut = document.getElementById('btnSignOutAction');
+    const signOutModal = document.getElementById('signOutConfirmModal');
+    const btnCancelSignOut = document.getElementById('btnCancelSignOut');
+    const btnCloseSignOutModal = document.getElementById('btnCloseSignOutModal');
+    const btnConfirmSignOut = document.getElementById('btnConfirmSignOut');
+
+    const closeSignOutModal = () => {
+      if (signOutModal) signOutModal.classList.remove('open');
+    };
+
+    const doSignOut = async () => {
+      try {
+        if (typeof Auth !== 'undefined' && Auth.signOut) await Auth.signOut();
+      } catch (_) {}
+      window.location.href = 'landing.html';
+    };
+
     if (btnSignOut) {
-      btnSignOut.addEventListener('click', async (e) => {
+      btnSignOut.addEventListener('click', (e) => {
         e.preventDefault();
-        try {
-          if (typeof Auth !== 'undefined' && Auth.signOut) await Auth.signOut();
-        } catch (_) {}
-        window.location.href = 'login.html';
+        const menu = document.getElementById('userDropdownMenu');
+        if (menu) menu.classList.remove('show');
+
+        if (signOutModal) {
+          signOutModal.classList.add('open');
+        } else {
+          if (confirm('Are you sure you want to sign out?')) {
+            doSignOut();
+          }
+        }
+      });
+    }
+
+    if (btnCancelSignOut) btnCancelSignOut.addEventListener('click', closeSignOutModal);
+    if (btnCloseSignOutModal) btnCloseSignOutModal.addEventListener('click', closeSignOutModal);
+
+    if (signOutModal) {
+      signOutModal.addEventListener('click', (e) => {
+        if (e.target === signOutModal) closeSignOutModal();
+      });
+    }
+
+    if (btnConfirmSignOut) {
+      btnConfirmSignOut.addEventListener('click', async () => {
+        closeSignOutModal();
+        await doSignOut();
       });
     }
 
@@ -1879,6 +2134,11 @@
       window.location.reload();
     },
 
+    confirmSignOut() {
+      const btnSignOut = document.getElementById('btnSignOutAction');
+      if (btnSignOut) btnSignOut.click();
+    },
+
     closeStudentDetailPanel() {
       closeStudentDetailPanel();
     },
@@ -1910,6 +2170,41 @@
 
     toggleSelectAllStudents(isChecked) {
       toggleSelectAllStudents(isChecked);
+    },
+
+    addPreferenceRow() {
+      addPreferenceRow();
+    },
+
+    removePrefRow(btnEl) {
+      const row = btnEl.closest('.pref-row-item');
+      if (row) {
+        row.remove();
+        reindexPreferenceRows();
+        validateAndSyncPreferences();
+      }
+    },
+
+    handleCollegeChange(selectEl) {
+      const chosenCol = selectEl.value;
+      const row = selectEl.closest('.pref-row-item');
+      const brSelect = row ? row.querySelector('.pref-branch-select') : null;
+      if (brSelect) {
+        if (chosenCol) {
+          const brs = getBranchesForCollege(chosenCol);
+          brSelect.innerHTML = '<option value="">Select Branch ▼</option>' +
+            brs.map(b => `<option value="${b}">${b}</option>`).join('');
+          brSelect.disabled = false;
+        } else {
+          brSelect.innerHTML = '<option value="">Select Branch ▼</option>';
+          brSelect.disabled = true;
+        }
+      }
+      validateAndSyncPreferences();
+    },
+
+    handleBranchChange() {
+      validateAndSyncPreferences();
     },
 
     viewCollegeDetails(collegeId, branch) {
