@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 5000;
+const FRONTEND_DIR = path.join(__dirname, '../frontend');
 
 const server = http.createServer((req, res) => {
   let reqUrl = req.url.split('?')[0];
@@ -11,10 +12,15 @@ const server = http.createServer((req, res) => {
   if (reqUrl === '/dashboard') targetFile = 'index.html';
   if (reqUrl === '/landing') targetFile = 'landing.html';
 
-  let filePath = path.join(__dirname, targetFile);
+  let filePath = path.join(FRONTEND_DIR, targetFile);
 
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-    filePath = path.join(__dirname, 'landing.html');
+    let backendPath = path.join(__dirname, targetFile);
+    if (fs.existsSync(backendPath) && !fs.statSync(backendPath).isDirectory()) {
+      filePath = backendPath;
+    } else {
+      filePath = path.join(FRONTEND_DIR, 'landing.html');
+    }
   }
 
   const ext = path.extname(filePath).toLowerCase();
@@ -41,3 +47,4 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}/ (Landing Page: landing.html, Dashboard: index.html)`);
 });
+

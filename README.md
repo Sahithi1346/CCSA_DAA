@@ -1,4 +1,4 @@
-﻿# CCSA - College Counselling Seat Allocator
+# CCSA - College Counselling Seat Allocator
 
 > Design and Analysis of Algorithms (DAA) Project - III Year, I Term
 >
@@ -64,41 +64,47 @@ The system processes 1,000+ students and allocates seats using two classic DAA a
 
 ## Project Structure
 
-`
+```
 College_allocator/
 |
-|-- index.html              # Main dashboard (SPA)
-|-- landing.html            # Landing/home page
-|-- login.html              # Login page
-|-- register.html           # Registration page
+|-- frontend/               # All Frontend UI Files
+|   |-- index.html          # Main dashboard (SPA)
+|   |-- landing.html        # Landing/home page
+|   |-- login.html          # Login page
+|   |-- register.html       # Registration page
+|   |-- js/                 # Client-side JavaScript
+|   |   |-- dashboard-app.js
+|   |   |-- auth.js
+|   |   |-- eamcet-manager.js
+|   |   |-- algorithms.js
+|   |   |-- greedy.js
+|   |   |-- backtracking.js
+|   |   |-- state.js
+|   |   -- supabase-config.js
+|   |-- css/                # Stylesheets
+|   |   |-- dashboard.css
+|   |   |-- auth.css
+|   |   |-- landing.css
+|   |   -- main.css
+|   -- static/             # Images & static assets
 |
-|-- js/
-|   |-- dashboard-app.js    # Core app controller (algorithms, state, UI)
-|   |-- auth.js             # Authentication logic
-|   |-- eamcet-manager.js   # EAMCET cutoff data loader
-|   |-- algorithms.js       # Algorithm helpers
-|   |-- greedy.js           # Greedy algorithm module
-|   |-- backtracking.js     # Backtracking algorithm module
-|   |-- state.js            # App state management
-|   -- supabase-config.js  # Supabase client configuration
+|-- backend/                # All Backend & Data Files
+|   |-- server.js           # Node.js static & API server
+|   |-- app.py              # Flask backend application
+|   |-- config.py           # Configuration
+|   |-- college_allocator.db# SQLite database
+|   |-- data/               # Cutoff JSON/CSV datasets
+|   |   |-- cutoffs.json
+|   |   |-- institutes.json
+|   |   |-- students.json
+|   |   -- 2021_FinalPhase.csv
+|   |-- templates/          # Flask HTML templates
+|   |-- package.json        # Backend dependencies
+|   -- package-lock.json
 |
-|-- css/
-|   |-- dashboard.css       # Dashboard styles
-|   |-- auth.css            # Auth page styles
-|   |-- landing.css         # Landing page styles
-|   -- main.css            # Global styles
-|
-|-- data/
-|   |-- cutoffs.json        # Category-wise closing ranks
-|   |-- institutes.json     # College-branch-capacity data
-|   |-- students.json       # Sample student data
-|   -- 2021_FinalPhase.csv # Telangana EAMCET 2021 real data
-|
-|-- app.py                  # Flask backend (optional)
-|-- server.js               # Node.js static server
-|-- package.json            # Node dependencies
+|-- package.json            # Root project package config
 -- .gitignore
-`
+```
 
 ## Setup and Run
 
