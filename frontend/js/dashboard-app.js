@@ -838,6 +838,7 @@
     reindexPreferenceRows();
     updateAddPrefBtnState();
     validateAndSyncPreferences();
+    onPreferencesModified();
   }
 
   function reindexPreferenceRows() {
@@ -875,6 +876,7 @@
     const container = document.getElementById('manualPrefRows');
     const valMsg = document.getElementById('prefValidationMsg');
     const runBtn = document.getElementById('btnShowAlgoChoices');
+    const allocBtn = document.getElementById('btnAllocateThisStudent');
     if (!container) return false;
 
     const rows = container.querySelectorAll('.pref-row-item');
@@ -904,19 +906,46 @@
       }
     });
 
-    if (hasDuplicate) {
-      if (valMsg) valMsg.style.display = 'flex';
-      if (runBtn) runBtn.disabled = true;
-      return false;
-    } else {
-      if (valMsg) valMsg.style.display = 'none';
-      if (validCount >= 1) {
-        if (runBtn) runBtn.disabled = false;
-        return true;
-      } else {
-        if (runBtn) runBtn.disabled = true;
-        return false;
-      }
+    const isOk = !hasDuplicate && validCount >= 1;
+    if (valMsg) valMsg.style.display = hasDuplicate ? 'flex' : 'none';
+    if (runBtn) runBtn.disabled = !isOk;
+    if (allocBtn) allocBtn.disabled = !isOk;
+    return isOk;
+  }
+
+  function onPreferencesModified() {
+    const s = app.students.find(item => item.id === app.selectedStudentId);
+    const manualPrefs = getManualPreferencesFromUi();
+    if (s && manualPrefs && manualPrefs.length > 0) {
+      s.preferences = manualPrefs;
+      app.saveStudents();
+    }
+
+    // Cancel running animation
+    if (window._allocationTimer) {
+      clearTimeout(window._allocationTimer);
+      window._allocationTimer = null;
+    }
+
+    // Hide old result card and inform user to click Run Algorithm
+    const resultCard = document.getElementById('individualResultCard');
+    if (resultCard) resultCard.style.display = 'none';
+
+    const stepsContainer = document.getElementById('allocationStepsContainer');
+    const processBox = document.getElementById('individualProcessBox');
+    if (stepsContainer) {
+      stepsContainer.innerHTML = `
+        <div style="padding: 0.75rem; background: #EFF6FF; border: 1px dashed #3B82F6; border-radius: 8px; text-align: center; color: #1E40AF; font-size: 0.82rem; font-weight: 500;">
+          Preferences updated! Click <strong>⚡ Run Algorithm</strong> to allocate seat with your new preferences.
+        </div>
+      `;
+    }
+    if (processBox) processBox.style.display = 'block';
+
+    const btn = document.getElementById('btnAllocateThisStudent');
+    if (btn) {
+      btn.textContent = '⚡ Run Algorithm';
+      btn.disabled = false;
     }
   }
 
@@ -967,18 +996,16 @@
     // Render manual college preference rows for this student
     renderManualPreferenceRows(s);
 
-    // Hide algorithm choice area by default until Run Algorithm button clicked
-    const algoArea = document.getElementById('algoChoiceArea');
-    if (algoArea) algoArea.style.display = 'none';
-
+    // Wire Run Algorithm button directly
+    const btn = document.getElementById('btnAllocateThisStudent');
     const btnShowAlgo = document.getElementById('btnShowAlgoChoices');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '⚡ Run Algorithm';
+      btn.onclick = () => allocateSingleStudent(false);
+    }
     if (btnShowAlgo) {
-      btnShowAlgo.onclick = () => {
-        if (algoArea) {
-          const isHidden = (algoArea.style.display === 'none' || !algoArea.style.display);
-          algoArea.style.display = isHidden ? 'flex' : 'none';
-        }
-      };
+      btnShowAlgo.onclick = () => allocateSingleStudent(false);
     }
 
     // Cancel any running step animation timer
@@ -1000,15 +1027,10 @@
     const processBox = document.getElementById('individualProcessBox');
     const resultCard = document.getElementById('individualResultCard');
     const stepsContainer = document.getElementById('allocationStepsContainer');
-    const btn = document.getElementById('btnAllocateThisStudent');
 
     if (processBox) processBox.style.display = 'none';
     if (resultCard) resultCard.style.display = 'none';
     if (stepsContainer) stepsContainer.innerHTML = '';
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = 'Allocate Seat for This Student';
-    }
 
     // If this student already has an allocation result, show it immediately in the right panel
     if (app.isAllocated) {
@@ -1082,7 +1104,7 @@
         }
 
         if (resultCard) resultCard.style.display = 'flex';
-        if (btn) { btn.textContent = 'Re-run Allocation'; }
+        if (btn) { btn.textContent = '⚡ Run Algorithm'; }
       }
     }
   }
@@ -1215,6 +1237,13 @@
     const s = app.students.find(item => item.id === app.selectedStudentId);
     if (!s) return;
 
+    // Sync algorithm from radio buttons
+    const algoRadio = document.querySelector('input[name="individualAlgo"]:checked');
+    if (algoRadio) {
+      app.selectedAlgorithm = algoRadio.value;
+      app.saveAllocation();
+    }
+
     // Sync manually selected preferences from UI into student object before running allocation
     const manualPrefs = getManualPreferencesFromUi();
     if (manualPrefs && manualPrefs.length > 0) {
@@ -1228,6 +1257,7 @@
     }
 
     const btn = document.getElementById('btnAllocateThisStudent');
+    const legacyBtn = document.getElementById('btnShowAlgoChoices');
     const processBox = document.getElementById('individualProcessBox');
     const resultCard = document.getElementById('individualResultCard');
     const stepsContainer = document.getElementById('allocationStepsContainer');
@@ -1236,6 +1266,7 @@
       btn.disabled = true;
       btn.textContent = 'Evaluating Preferences...';
     }
+    if (legacyBtn) legacyBtn.disabled = true;
     if (resultCard) resultCard.style.display = 'none';
     if (processBox) processBox.style.display = 'block';
     if (stepsContainer) stepsContainer.innerHTML = '';
@@ -1380,8 +1411,11 @@
 
           if (btn) {
             btn.disabled = false;
-            btn.textContent = 'Re-run Allocation';
+            btn.textContent = '⚡ Run Algorithm';
           }
+          if (legacyBtn) legacyBtn.disabled = false;
+          renderStudentsTab();
+          updateStatCards();
 
           if (!isBatchMode) {
             if (result.status === 'Allocated') {
@@ -1855,6 +1889,8 @@
     // Single student allocate CTA
     const btnIndivAlloc = document.getElementById('btnAllocateThisStudent');
     if (btnIndivAlloc) btnIndivAlloc.addEventListener('click', () => allocateSingleStudent(false));
+    const btnShowAlgo = document.getElementById('btnShowAlgoChoices');
+    if (btnShowAlgo) btnShowAlgo.addEventListener('click', () => allocateSingleStudent(false));
 
     // Add Preference Row button
     const btnAddPrefRow = document.getElementById('btnAddPrefRowBtn');
@@ -2182,6 +2218,7 @@
         row.remove();
         reindexPreferenceRows();
         validateAndSyncPreferences();
+        onPreferencesModified();
       }
     },
 
@@ -2201,10 +2238,12 @@
         }
       }
       validateAndSyncPreferences();
+      onPreferencesModified();
     },
 
     handleBranchChange() {
       validateAndSyncPreferences();
+      onPreferencesModified();
     },
 
     viewCollegeDetails(collegeId, branch) {
