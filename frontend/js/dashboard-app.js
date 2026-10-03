@@ -7,65 +7,81 @@
   // 1. DEFAULT DATASETS
   // ─────────────────────────────────────────────────────────────
   const DEFAULT_COLLEGES = [
-    { id: 'C001', name: 'JNTU Hyderabad', branch: 'CSE', capacity: 120, closingRank: 15200 },
-    { id: 'C001', name: 'JNTU Hyderabad', branch: 'ECE', capacity: 120, closingRank: 18600 },
-    { id: 'C001', name: 'JNTU Hyderabad', branch: 'EEE', capacity: 60, closingRank: 25400 },
-    { id: 'C002', name: 'Osmania University', branch: 'CSE', capacity: 120, closingRank: 16200 },
-    { id: 'C002', name: 'Osmania University', branch: 'ECE', capacity: 120, closingRank: 20100 },
-    { id: 'C003', name: 'CBIT Hyderabad', branch: 'CSE', capacity: 120, closingRank: 17400 },
-    { id: 'C003', name: 'CBIT Hyderabad', branch: 'IT', capacity: 60, closingRank: 26800 },
-    { id: 'C004', name: 'VNR VJIET', branch: 'CSE', capacity: 180, closingRank: 19800 },
-    { id: 'C004', name: 'VNR VJIET', branch: 'ECE', capacity: 120, closingRank: 24500 },
-    { id: 'C005', name: 'Vasavi College of Engineering', branch: 'CSE', capacity: 120, closingRank: 21400 },
-    { id: 'C005', name: 'Vasavi College of Engineering', branch: 'IT', capacity: 60, closingRank: 28900 },
-    { id: 'C006', name: 'CVR College of Engineering', branch: 'CSE', capacity: 180, closingRank: 25800 },
-    { id: 'C006', name: 'CVR College of Engineering', branch: 'AI&DS', capacity: 120, closingRank: 29500 },
-    { id: 'C007', name: 'Gokaraju Rangaraju (GRIET)', branch: 'CSE', capacity: 180, closingRank: 27100 },
-    { id: 'C008', name: 'Vardhaman College of Engg', branch: 'CSE', capacity: 180, closingRank: 31200 },
-    { id: 'C009', name: 'Keshav Memorial (KMIT)', branch: 'CSE', capacity: 240, closingRank: 28400 },
-    { id: 'C010', name: 'B V Raju Institute (BVRIT)', branch: 'CSE', capacity: 180, closingRank: 35600 },
-    { id: 'C011', name: 'Sreenidhi Inst of Sci & Tech', branch: 'CSE', capacity: 240, closingRank: 34100 },
-    { id: 'C012', name: 'MVSR Engineering College', branch: 'CSE', capacity: 180, closingRank: 36200 },
-    { id: 'C013', name: 'Mahatma Gandhi Inst (MGIT)', branch: 'CSE', capacity: 120, closingRank: 32500 },
-    { id: 'C014', name: 'Kakatiya Inst (KITS Warangal)', branch: 'CSE', capacity: 180, closingRank: 38900 },
-    { id: 'C015', name: 'CMR College of Engineering', branch: 'CSE', capacity: 180, closingRank: 42100 },
-    { id: 'C016', name: 'CMR Institute of Technology', branch: 'ECE', capacity: 120, closingRank: 48900 },
-    { id: 'C017', name: 'Malla Reddy Engg College', branch: 'CSE', capacity: 240, closingRank: 45600 },
-    { id: 'C018', name: 'MLR Institute of Technology', branch: 'CSE', capacity: 180, closingRank: 47200 },
-    { id: 'C019', name: 'Institute of Aeronautical Engg', branch: 'CSE', capacity: 180, closingRank: 46800 },
-    { id: 'C020', name: 'Guru Nanak Tech Campus', branch: 'CSE', capacity: 240, closingRank: 52100 },
-    { id: 'C021', name: 'Anurag University', branch: 'CSE', capacity: 240, closingRank: 43500 },
-    { id: 'C022', name: 'SR University Warangal', branch: 'CSE', capacity: 180, closingRank: 54200 },
-    { id: 'C023', name: 'Vaagdevi Engineering College', branch: 'CSE', capacity: 120, closingRank: 58900 },
-    { id: 'C024', name: 'JNTUH Sultanpur', branch: 'CSE', capacity: 60, closingRank: 37500 },
-    { id: 'C025', name: 'JNTUH Jagtial', branch: 'CSE', capacity: 60, closingRank: 39800 },
-    { id: 'C026', name: 'JNTUH Manthani', branch: 'CSE', capacity: 60, closingRank: 44200 },
-    { id: 'C027', name: 'KU College of Engg Kothagudem', branch: 'CSE', capacity: 60, closingRank: 46500 },
-    { id: 'C028', name: 'Siddhartha Inst of Tech', branch: 'CSE', capacity: 120, closingRank: 62400 },
-    { id: 'C029', name: 'KG Reddy College of Engg', branch: 'CSE', capacity: 120, closingRank: 65100 },
-    { id: 'C030', name: 'Sphoorthy Engineering College', branch: 'CSE', capacity: 120, closingRank: 69400 },
-    { id: 'C031', name: 'Nalla Malla Reddy Engg College', branch: 'CSE', capacity: 120, closingRank: 71200 },
-    { id: 'C032', name: 'Samskruti College of Engg', branch: 'CSE', capacity: 120, closingRank: 75400 },
-    { id: 'C033', name: 'Balaji Inst of Tech Narsampet', branch: 'CSE', capacity: 120, closingRank: 78900 },
-    { id: 'C034', name: 'Jayamukhi Inst of Tech Warangal', branch: 'CSE', capacity: 120, closingRank: 81200 },
-    { id: 'C035', name: 'Jyothishmathi Inst Karimnagar', branch: 'CSE', capacity: 120, closingRank: 83500 },
-    { id: 'C036', name: 'Anurag Engineering Kodad', branch: 'CSE', capacity: 120, closingRank: 86400 },
-    { id: 'C037', name: 'TKR College of Engg', branch: 'CSE', capacity: 180, closingRank: 49800 },
-    { id: 'C038', name: 'Teegala Krishna Reddy Engg', branch: 'CSE', capacity: 120, closingRank: 59400 },
-    { id: 'C039', name: 'Geethanjali College of Engg', branch: 'CSE', capacity: 180, closingRank: 41200 },
-    { id: 'C040', name: 'Bharat Inst of Engg & Tech', branch: 'CSE', capacity: 180, closingRank: 63100 },
-    { id: 'C041', name: 'St. Martins Engineering College', branch: 'CSE', capacity: 180, closingRank: 51200 },
-    { id: 'C042', name: 'Marri Laxman Reddy (MLRS)', branch: 'CSE', capacity: 180, closingRank: 53400 },
-    { id: 'C043', name: 'Maturi Venkata Subba Rao (ECE)', branch: 'ECE', capacity: 120, closingRank: 44500 },
-    { id: 'C044', name: 'KITS Warangal (ECE)', branch: 'ECE', capacity: 120, closingRank: 46200 },
-    { id: 'C045', name: 'CMR Engineering College', branch: 'CSE', capacity: 180, closingRank: 50400 },
-    { id: 'C046', name: 'VNR VJIET (IT)', branch: 'IT', capacity: 60, closingRank: 22100 },
-    { id: 'C047', name: 'CBIT Hyderabad (ECE)', branch: 'ECE', capacity: 120, closingRank: 23400 },
-    { id: 'C048', name: 'Vasavi College of Engg (ECE)', branch: 'ECE', capacity: 120, closingRank: 25100 },
-    { id: 'C049', name: 'CVR College (ECE)', branch: 'ECE', capacity: 120, closingRank: 31200 },
-    { id: 'C050', name: 'GRIET Hyderabad (IT)', branch: 'IT', capacity: 60, closingRank: 32400 },
-    { id: 'C051', name: 'Vardhaman College (IT)', branch: 'IT', capacity: 60, closingRank: 36500 },
-    { id: 'C052', name: 'BVRIT Narsapur (ECE)', branch: 'ECE', capacity: 120, closingRank: 39800 }
+    { id: 'JNTH', name: 'JNTU Hyderabad', branch: 'CSE', capacity: 120, closingRank: 15200 },
+    { id: 'JNTH', name: 'JNTU Hyderabad', branch: 'ECE', capacity: 120, closingRank: 18600 },
+    { id: 'JNTH', name: 'JNTU Hyderabad', branch: 'EEE', capacity: 60, closingRank: 25400 },
+    { id: 'JNTH', name: 'JNTU Hyderabad', branch: 'IT', capacity: 60, closingRank: 19500 },
+    { id: 'JNTH', name: 'JNTU Hyderabad', branch: 'INF', capacity: 60, closingRank: 19500 },
+    { id: 'OUCE', name: 'Osmania University', branch: 'CSE', capacity: 120, closingRank: 16200 },
+    { id: 'OUCE', name: 'Osmania University', branch: 'ECE', capacity: 120, closingRank: 20100 },
+    { id: 'OUCE', name: 'Osmania University', branch: 'EEE', capacity: 60, closingRank: 27000 },
+    { id: 'CBIT', name: 'CBIT Hyderabad', branch: 'CSE', capacity: 120, closingRank: 17400 },
+    { id: 'CBIT', name: 'CBIT Hyderabad', branch: 'ECE', capacity: 120, closingRank: 23400 },
+    { id: 'CBIT', name: 'CBIT Hyderabad', branch: 'IT', capacity: 60, closingRank: 26800 },
+    { id: 'CBIT', name: 'CBIT Hyderabad', branch: 'INF', capacity: 60, closingRank: 26800 },
+    { id: 'CBIT', name: 'CBIT Hyderabad', branch: 'EEE', capacity: 60, closingRank: 31000 },
+    { id: 'VJEC', name: 'VNR VJIET', branch: 'CSE', capacity: 180, closingRank: 19800 },
+    { id: 'VJEC', name: 'VNR VJIET', branch: 'ECE', capacity: 120, closingRank: 24500 },
+    { id: 'VJEC', name: 'VNR VJIET', branch: 'IT', capacity: 60, closingRank: 22100 },
+    { id: 'VJEC', name: 'VNR VJIET', branch: 'INF', capacity: 60, closingRank: 22100 },
+    { id: 'VJEC', name: 'VNR VJIET', branch: 'EEE', capacity: 60, closingRank: 32000 },
+    { id: 'VASV', name: 'Vasavi College of Engineering', branch: 'CSE', capacity: 120, closingRank: 21400 },
+    { id: 'VASV', name: 'Vasavi College of Engineering', branch: 'ECE', capacity: 120, closingRank: 25100 },
+    { id: 'VASV', name: 'Vasavi College of Engineering', branch: 'IT', capacity: 60, closingRank: 28900 },
+    { id: 'VASV', name: 'Vasavi College of Engineering', branch: 'INF', capacity: 60, closingRank: 28900 },
+    { id: 'VASV', name: 'Vasavi College of Engineering', branch: 'EEE', capacity: 60, closingRank: 34000 },
+    { id: 'CVRH', name: 'CVR College of Engineering', branch: 'CSE', capacity: 180, closingRank: 25800 },
+    { id: 'CVRH', name: 'CVR College of Engineering', branch: 'ECE', capacity: 120, closingRank: 31200 },
+    { id: 'CVRH', name: 'CVR College of Engineering', branch: 'AI&DS', capacity: 120, closingRank: 29500 },
+    { id: 'CVRH', name: 'CVR College of Engineering', branch: 'IT', capacity: 60, closingRank: 30500 },
+    { id: 'GRRR', name: 'Gokaraju Rangaraju (GRIET)', branch: 'CSE', capacity: 180, closingRank: 27100 },
+    { id: 'GRRR', name: 'Gokaraju Rangaraju (GRIET)', branch: 'ECE', capacity: 120, closingRank: 33000 },
+    { id: 'GRRR', name: 'Gokaraju Rangaraju (GRIET)', branch: 'IT', capacity: 60, closingRank: 32400 },
+    { id: 'VMEG', name: 'Vardhaman College of Engg', branch: 'CSE', capacity: 180, closingRank: 31200 },
+    { id: 'VMEG', name: 'Vardhaman College of Engg', branch: 'ECE', capacity: 120, closingRank: 37000 },
+    { id: 'VMEG', name: 'Vardhaman College of Engg', branch: 'IT', capacity: 60, closingRank: 36500 },
+    { id: 'KMIT', name: 'Keshav Memorial (KMIT)', branch: 'CSE', capacity: 240, closingRank: 28400 },
+    { id: 'KMIT', name: 'Keshav Memorial (KMIT)', branch: 'IT', capacity: 120, closingRank: 31000 },
+    { id: 'BVRI', name: 'B V Raju Institute (BVRIT)', branch: 'CSE', capacity: 180, closingRank: 35600 },
+    { id: 'BVRI', name: 'B V Raju Institute (BVRIT)', branch: 'ECE', capacity: 120, closingRank: 39800 },
+    { id: 'BVRI', name: 'B V Raju Institute (BVRIT)', branch: 'IT', capacity: 60, closingRank: 41000 },
+    { id: 'SNIS', name: 'Sreenidhi Inst of Sci & Tech', branch: 'CSE', capacity: 240, closingRank: 34100 },
+    { id: 'SNIS', name: 'Sreenidhi Inst of Sci & Tech', branch: 'ECE', capacity: 120, closingRank: 41000 },
+    { id: 'MVSR', name: 'MVSR Engineering College', branch: 'CSE', capacity: 180, closingRank: 36200 },
+    { id: 'MVSR', name: 'MVSR Engineering College', branch: 'ECE', capacity: 120, closingRank: 44500 },
+    { id: 'MGIT', name: 'Mahatma Gandhi Inst (MGIT)', branch: 'CSE', capacity: 120, closingRank: 32500 },
+    { id: 'MGIT', name: 'Mahatma Gandhi Inst (MGIT)', branch: 'ECE', capacity: 120, closingRank: 42000 },
+    { id: 'KITS', name: 'Kakatiya Inst (KITS Warangal)', branch: 'CSE', capacity: 180, closingRank: 38900 },
+    { id: 'KITS', name: 'Kakatiya Inst (KITS Warangal)', branch: 'ECE', capacity: 120, closingRank: 46200 },
+    { id: 'CMRN', name: 'CMR College of Engineering', branch: 'CSE', capacity: 180, closingRank: 42100 },
+    { id: 'CMRM', name: 'CMR Institute of Technology', branch: 'ECE', capacity: 120, closingRank: 48900 },
+    { id: 'CMEC', name: 'CMR Engineering College', branch: 'CSE', capacity: 180, closingRank: 50400 },
+    { id: 'MREC', name: 'Malla Reddy Engg College', branch: 'CSE', capacity: 240, closingRank: 45600 },
+    { id: 'MLID', name: 'MLR Institute of Technology', branch: 'CSE', capacity: 180, closingRank: 47200 },
+    { id: 'IARE', name: 'Institute of Aeronautical Engg', branch: 'CSE', capacity: 180, closingRank: 46800 },
+    { id: 'GURU', name: 'Guru Nanak Tech Campus', branch: 'CSE', capacity: 240, closingRank: 52100 },
+    { id: 'CVSR', name: 'Anurag University', branch: 'CSE', capacity: 240, closingRank: 43500 },
+    { id: 'SRHP', name: 'SR University Warangal', branch: 'CSE', capacity: 180, closingRank: 54200 },
+    { id: 'VAGE', name: 'Vaagdevi Engineering College', branch: 'CSE', capacity: 120, closingRank: 58900 },
+    { id: 'JNTS', name: 'JNTUH Sultanpur', branch: 'CSE', capacity: 60, closingRank: 37500 },
+    { id: 'JNKR', name: 'JNTUH Jagtial', branch: 'CSE', capacity: 60, closingRank: 39800 },
+    { id: 'JNTM', name: 'JNTUH Manthani', branch: 'CSE', capacity: 60, closingRank: 44200 },
+    { id: 'KUTM', name: 'KU College of Engg Kothagudem', branch: 'CSE', capacity: 60, closingRank: 46500 },
+    { id: 'SISG', name: 'Siddhartha Inst of Tech', branch: 'CSE', capacity: 120, closingRank: 62400 },
+    { id: 'KGRH', name: 'KG Reddy College of Engg', branch: 'CSE', capacity: 120, closingRank: 65100 },
+    { id: 'SPHN', name: 'Sphoorthy Engineering College', branch: 'CSE', capacity: 120, closingRank: 69400 },
+    { id: 'NREC', name: 'Nalla Malla Reddy Engg College', branch: 'CSE', capacity: 120, closingRank: 71200 },
+    { id: 'SMSK', name: 'Samskruti College of Engg', branch: 'CSE', capacity: 120, closingRank: 75400 },
+    { id: 'BITN', name: 'Balaji Inst of Tech Narsampet', branch: 'CSE', capacity: 120, closingRank: 78900 },
+    { id: 'JAYA', name: 'Jayamukhi Inst of Tech Warangal', branch: 'CSE', capacity: 120, closingRank: 81200 },
+    { id: 'JMTS', name: 'Jyothishmathi Inst Karimnagar', branch: 'CSE', capacity: 120, closingRank: 83500 },
+    { id: 'ANRK', name: 'Anurag Engineering Kodad', branch: 'CSE', capacity: 120, closingRank: 86400 },
+    { id: 'TKRC', name: 'TKR College of Engg', branch: 'CSE', capacity: 180, closingRank: 49800 },
+    { id: 'TRET', name: 'Teegala Krishna Reddy Engg', branch: 'CSE', capacity: 120, closingRank: 59400 },
+    { id: 'GCTC', name: 'Geethanjali College of Engg', branch: 'CSE', capacity: 180, closingRank: 41200 },
+    { id: 'BIET', name: 'Bharat Inst of Engg & Tech', branch: 'CSE', capacity: 180, closingRank: 63100 },
+    { id: 'MRTN', name: 'St. Martins Engineering College', branch: 'CSE', capacity: 180, closingRank: 51200 },
+    { id: 'MLRS', name: 'Marri Laxman Reddy (MLRS)', branch: 'CSE', capacity: 180, closingRank: 53400 }
   ];
 
   // Top 8 candidates with REAL college preferences
@@ -143,9 +159,9 @@
       preferences: [
         'JNTU Hyderabad - ECE',
         'Osmania University - ECE',
-        'CBIT Hyderabad (ECE) - ECE',
-        'Vasavi College of Engg (ECE) - ECE',
-        'CVR College (ECE) - ECE'
+        'CBIT Hyderabad - ECE',
+        'Vasavi College of Engineering - ECE',
+        'CVR College of Engineering - ECE'
       ]
     },
     {
@@ -236,27 +252,48 @@
 
   /**
    * Find a college entry in app.colleges by name and branch.
-   * Handles variations and branch-in-name formats like 'VNR VJIET (IT)'.
+   * Supports canonical names, official names, institute codes, and branch aliases (e.g. IT <-> INF).
    */
   function findCollegeEntry(collegeName, branchName) {
     if (!collegeName || !branchName) return null;
     const targetCol = collegeName.trim().toLowerCase();
     const targetColClean = cleanCollegeName(collegeName);
-    const targetBr = branchName.trim().toLowerCase();
+    const targetBr = branchName.trim().toUpperCase();
 
-    // 1. Exact match by name & branch
-    let found = app.colleges.find(c =>
-      c.name.toLowerCase() === targetCol && c.branch.toLowerCase() === targetBr
-    );
-    if (found) return found;
+    // Branch aliases & equivalents
+    const branchEquivs = [targetBr.toLowerCase()];
+    if (targetBr === 'IT') branchEquivs.push('inf');
+    if (targetBr === 'INF') branchEquivs.push('it');
+    if (targetBr === 'CIVIL') branchEquivs.push('civ');
+    if (targetBr === 'CIV') branchEquivs.push('civil');
+    if (targetBr === 'MECH') branchEquivs.push('mec');
+    if (targetBr === 'MEC') branchEquivs.push('mech');
+    if (targetBr === 'AI&DS' || targetBr === 'AIDS') branchEquivs.push('aid', 'aim', 'csd', 'csm');
+
+    // 1. Exact match by name & branch (with branch equivalence)
+    for (const br of branchEquivs) {
+      let found = app.colleges.find(c =>
+        (c.name.toLowerCase() === targetCol || (c.officialName && c.officialName.toLowerCase() === targetCol) || (c.id && c.id.toLowerCase() === targetCol)) &&
+        c.branch.toLowerCase() === br
+      );
+      if (found) return found;
+    }
 
     // 2. Match by cleaned name & branch
-    found = app.colleges.find(c => {
-      const cClean = cleanCollegeName(c.name);
-      return (cClean === targetColClean || cClean.includes(targetColClean) || targetColClean.includes(cClean)) &&
-             c.branch.toLowerCase() === targetBr;
-    });
-    return found || null;
+    for (const br of branchEquivs) {
+      let found = app.colleges.find(c => {
+        const cClean = cleanCollegeName(c.name);
+        const offClean = c.officialName ? cleanCollegeName(c.officialName) : '';
+        const match = cClean === targetColClean ||
+                      cClean.includes(targetColClean) ||
+                      targetColClean.includes(cClean) ||
+                      (offClean && (offClean.includes(targetColClean) || targetColClean.includes(offClean)));
+        return match && c.branch.toLowerCase() === br;
+      });
+      if (found) return found;
+    }
+
+    return null;
   }
 
   /**
@@ -443,17 +480,17 @@
           this.saveStudents();
         }
 
-        // 2. Load Colleges
+        // 2. Load Colleges — prefer localStorage cache if version matches
+        const savedVer = localStorage.getItem('ccsa_colleges_ver');
         const savedColleges = localStorage.getItem('ccsa_colleges_data');
-        if (savedColleges) {
+        if (savedVer === '2.1' && savedColleges) {
           const parsedCol = JSON.parse(savedColleges);
-          if (Array.isArray(parsedCol) && parsedCol.length > 0) {
+          if (Array.isArray(parsedCol) && parsedCol.length > 100) {
             this.colleges = parsedCol;
           }
         }
         if (!this.colleges || this.colleges.length === 0) {
           this.colleges = [...DEFAULT_COLLEGES];
-          this.saveColleges();
         }
 
         // 3. Load Allocation Results
@@ -488,6 +525,147 @@
         if (!this.colleges || this.colleges.length === 0) {
           this.colleges = [...DEFAULT_COLLEGES];
         }
+      }
+    }
+
+    /**
+     * Fetches the real Telangana EAMCET cutoffs.json and converts each row to
+     * the app's college format { id, name, branch, capacity, closingRank, categoryCutoffs }.
+     * Uses canonical friendly names for popular colleges, clean title casing for others,
+     * and includes IT/INF aliases.
+     */
+    async loadRealCollegesFromCutoffs() {
+      const cacheVer = localStorage.getItem('ccsa_colleges_ver');
+      if (cacheVer === '2.1' && this.colleges && this.colleges.length > 200) {
+        return;
+      }
+
+      try {
+        let response = await fetch('/data/cutoffs.json');
+        if (!response.ok) {
+          response = await fetch('/backend/data/cutoffs.json');
+        }
+        if (!response.ok) throw new Error('cutoffs.json not reachable');
+        const rawData = await response.json();
+        if (!Array.isArray(rawData) || rawData.length === 0) throw new Error('Empty cutoffs data');
+
+        const KNOWN_FRIENDLY_NAMES = {
+          'CBIT': 'CBIT Hyderabad',
+          'JNTH': 'JNTU Hyderabad',
+          'OUCE': 'Osmania University',
+          'VJEC': 'VNR VJIET',
+          'VASV': 'Vasavi College of Engineering',
+          'CVRH': 'CVR College of Engineering',
+          'GRRR': 'Gokaraju Rangaraju (GRIET)',
+          'VMEG': 'Vardhaman College of Engg',
+          'KMIT': 'Keshav Memorial (KMIT)',
+          'BVRI': 'B V Raju Institute (BVRIT)',
+          'SNIS': 'Sreenidhi Inst of Sci & Tech',
+          'MVSR': 'MVSR Engineering College',
+          'MGIT': 'Mahatma Gandhi Inst (MGIT)',
+          'KITS': 'Kakatiya Inst (KITS Warangal)',
+          'CMRN': 'CMR College of Engineering',
+          'CMRM': 'CMR Institute of Technology',
+          'CMEC': 'CMR Engineering College',
+          'MREC': 'Malla Reddy Engg College',
+          'MLID': 'MLR Institute of Technology',
+          'IARE': 'Institute of Aeronautical Engg',
+          'GURU': 'Guru Nanak Tech Campus',
+          'CVSR': 'Anurag University',
+          'SRHP': 'SR University Warangal',
+          'VAGE': 'Vaagdevi Engineering College',
+          'JNTS': 'JNTUH Sultanpur',
+          'JNKR': 'JNTUH Jagtial',
+          'JNTM': 'JNTUH Manthani',
+          'KUTM': 'KU College of Engg Kothagudem',
+          'SISG': 'Siddhartha Inst of Tech',
+          'KGRH': 'KG Reddy College of Engg',
+          'SPHN': 'Sphoorthy Engineering College',
+          'NREC': 'Nalla Malla Reddy Engg College',
+          'SMSK': 'Samskruti College of Engg',
+          'BITN': 'Balaji Inst of Tech Narsampet',
+          'JAYA': 'Jayamukhi Inst of Tech Warangal',
+          'JMTS': 'Jyothishmathi Inst Karimnagar',
+          'ANRK': 'Anurag Engineering Kodad',
+          'TKRC': 'TKR College of Engg',
+          'TRET': 'Teegala Krishna Reddy Engg',
+          'GCTC': 'Geethanjali College of Engg',
+          'BIET': 'Bharat Inst of Engg & Tech',
+          'MRTN': 'St. Martins Engineering College',
+          'MLRS': 'Marri Laxman Reddy (MLRS)'
+        };
+
+        function toTitleCase(str) {
+          return str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+            .replace(/\bEngg\b/gi, 'Engineering')
+            .replace(/\bInst\b/gi, 'Institute')
+            .replace(/\bTech\b/gi, 'Technology')
+            .replace(/\bSci\b/gi, 'Science')
+            .replace(/\bColl\b/gi, 'College');
+        }
+
+        const seen = new Map();
+        const colleges = [];
+
+        rawData.forEach(row => {
+          const instCode = (row['INST CODE'] || '').trim();
+          const rawName  = (row['INSTITUTE NAME'] || '').trim();
+          const branch   = (row['BRANCH'] || '').trim();
+          if (!instCode || !branch) return;
+
+          const displayName = KNOWN_FRIENDLY_NAMES[instCode] || toTitleCase(rawName);
+          const key = `${instCode}::${branch}`;
+          if (seen.has(key)) return;
+          seen.set(key, true);
+
+          const ocBoys = parseInt(row['OC BOYS'], 10) || 0;
+
+          const entry = {
+            id: instCode,
+            name: displayName,
+            officialName: rawName,
+            branch,
+            capacity: 60,
+            closingRank: ocBoys,
+            categoryCutoffs: {
+              'OC':   Math.min(parseInt(row['OC BOYS'], 10) || 0, parseInt(row['OC GIRLS'], 10) || 0) || ocBoys,
+              'BC-A': Math.min(parseInt(row['BC_A BOYS'], 10) || 0, parseInt(row['BC_A GIRLS'], 10) || 0) || 0,
+              'BC-B': Math.min(parseInt(row['BC_B BOYS'], 10) || 0, parseInt(row['BC_B GIRLS'], 10) || 0) || 0,
+              'BC-C': Math.min(parseInt(row['BC_C BOYS'], 10) || 0, parseInt(row['BC_C GIRLS'], 10) || 0) || 0,
+              'BC-D': Math.min(parseInt(row['BC_D BOYS'], 10) || 0, parseInt(row['BC_D GIRLS'], 10) || 0) || 0,
+              'BC-E': Math.min(parseInt(row['BC_E BOYS'], 10) || 0, parseInt(row['BC_E GIRLS'], 10) || 0) || 0,
+              'SC':   Math.min(parseInt(row['SC BOYS'], 10) || 0, parseInt(row['SC GIRLS'], 10) || 0) || 0,
+              'ST':   Math.min(parseInt(row['ST BOYS'], 10) || 0, parseInt(row['ST GIRLS'], 10) || 0) || 0,
+              'EWS':  Math.min(parseInt(row['EWS GEN OU'], 10) || 0, parseInt(row['EWS GIRLS OU'], 10) || 0) || 0,
+            }
+          };
+          colleges.push(entry);
+
+          // Also provide 'IT' alias if 'INF' branch exists
+          if (branch === 'INF') {
+            const itKey = `${instCode}::IT`;
+            if (!seen.has(itKey)) {
+              seen.set(itKey, true);
+              colleges.push({
+                ...entry,
+                branch: 'IT'
+              });
+            }
+          }
+        });
+
+        if (colleges.length > 0) {
+          this.colleges = colleges;
+          localStorage.setItem('ccsa_colleges_ver', '2.1');
+          this.saveColleges();
+          console.log(`[CCSA] Loaded ${colleges.length} college-branch entries across Telangana`);
+
+          renderCollegesTab();
+          const selectedStudent = app.students.find(s => s.id === app.selectedStudentId);
+          if (selectedStudent) renderManualPreferenceRows(selectedStudent);
+        }
+      } catch (err) {
+        console.warn('[CCSA] Could not load cutoffs.json, using cleaned DEFAULT_COLLEGES:', err.message);
       }
     }
 
@@ -743,14 +921,25 @@
   // ─────────────────────────────────────────────────────────────
   function getUniqueCollegeNames() {
     if (!app.colleges || !app.colleges.length) return [];
-    const set = new Set(app.colleges.map(c => c.name));
-    return Array.from(set).sort();
+    // Deduplicate by lowercase-trimmed name, then return sorted original-case names
+    const seen = new Map();
+    app.colleges.forEach(c => {
+      const key = (c.name || '').trim().toLowerCase();
+      if (key && !seen.has(key)) seen.set(key, (c.name || '').trim());
+    });
+    return Array.from(seen.values()).sort();
   }
 
   function getBranchesForCollege(collegeName) {
     if (!collegeName || !app.colleges) return [];
-    const matching = app.colleges.filter(c => c.name.trim().toLowerCase() === collegeName.trim().toLowerCase());
-    const set = new Set(matching.map(c => c.branch));
+    const target = collegeName.trim().toLowerCase();
+    const matching = app.colleges.filter(c => c.name.trim().toLowerCase() === target);
+    const set = new Set();
+    matching.forEach(c => {
+      if (c.branch) set.add(c.branch);
+      if (c.branch === 'INF') set.add('IT');
+      if (c.branch === 'IT') set.add('INF');
+    });
     return Array.from(set).sort();
   }
 
@@ -769,8 +958,15 @@
     for (let i = 0; i < rowsCount; i++) {
       const pStr = prefs[i] || '';
       const parts = pStr.split(' - ');
-      const selCol = parts[0] ? parts[0].trim() : '';
-      const selBr  = parts[1] ? parts[1].trim() : '';
+      let selCol = parts[0] ? parts[0].trim() : '';
+      let selBr  = parts[1] ? parts[1].trim() : '';
+
+      // Normalize any legacy branch-in-name strings (e.g. 'CBIT Hyderabad (ECE)' -> 'CBIT Hyderabad')
+      if (selCol.includes('(') && !uniqueColleges.includes(selCol)) {
+        const cleaned = selCol.replace(/\s*\([^)]*\)/g, '').trim();
+        const found = uniqueColleges.find(c => c.toLowerCase() === cleaned.toLowerCase());
+        if (found) selCol = found;
+      }
 
       const availableBranches = selCol ? getBranchesForCollege(selCol) : [];
 
@@ -779,7 +975,7 @@
       ).join('');
 
       const brOptions = availableBranches.map(br =>
-        `<option value="${br}" ${br.toLowerCase() === selBr.toLowerCase() ? 'selected' : ''}>${br}</option>`
+        `<option value="${br}" ${(br.toLowerCase() === selBr.toLowerCase() || (br === 'IT' && selBr === 'INF') || (br === 'INF' && selBr === 'IT')) ? 'selected' : ''}>${br}</option>`
       ).join('');
 
       const rowDiv = document.createElement('div');
@@ -1844,6 +2040,32 @@
   // 4. INITIALIZE CONTROLS & LISTENERS
   // ─────────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
+    // Clear stale college cache so real cutoffs.json data loads fresh
+    if (localStorage.getItem('ccsa_colleges_ver') !== '2.1') {
+      localStorage.removeItem('ccsa_colleges_data');
+      app.colleges = [...DEFAULT_COLLEGES];
+    }
+
+    // Sanitize any legacy saved student preferences (e.g. 'CBIT Hyderabad (ECE)' -> 'CBIT Hyderabad')
+    if (app.students && app.students.length > 0) {
+      let modified = false;
+      app.students.forEach(s => {
+        if (s.preferences && Array.isArray(s.preferences)) {
+          s.preferences = s.preferences.map(p => {
+            if (p.includes('(ECE) - ECE') || p.includes('(IT) - IT') || p.includes('(AI&DS) - AI&DS')) {
+              modified = true;
+              return p.replace(/\s*\([^)]*\)\s*-\s*/, ' - ');
+            }
+            return p;
+          });
+        }
+      });
+      if (modified) app.saveStudents();
+    }
+
+    // Fetch real college data from cutoffs.json (async, runs in background)
+    app.loadRealCollegesFromCutoffs();
+
     // Nav Pills
     document.querySelectorAll('.nav-pill-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {

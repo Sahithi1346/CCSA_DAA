@@ -15,9 +15,14 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(FRONTEND_DIR, targetFile);
 
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-    let backendPath = path.join(__dirname, targetFile);
+    let cleanTarget = targetFile.replace(/^backend[\/\\]/, '');
+    let backendPath = path.join(__dirname, cleanTarget);
+    let rootPath = path.join(__dirname, '..', targetFile);
+
     if (fs.existsSync(backendPath) && !fs.statSync(backendPath).isDirectory()) {
       filePath = backendPath;
+    } else if (fs.existsSync(rootPath) && !fs.statSync(rootPath).isDirectory()) {
+      filePath = rootPath;
     } else {
       filePath = path.join(FRONTEND_DIR, 'landing.html');
     }

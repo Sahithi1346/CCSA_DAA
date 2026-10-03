@@ -441,35 +441,51 @@
     </div>
   </footer>
 
-  <!-- ─── Interactive Quick Demo Modal ─── -->
-  <div id="demoModal" class="demo-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); z-index:9999; align-items:center; justify-content:center; padding:1.5rem;">
-    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:24px; max-width:800px; width:100%; box-shadow:0 25px 60px rgba(0,0,0,0.5); overflow:hidden; animation:modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
-      <div style="padding:1.25rem 1.75rem; border-bottom:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; background:var(--bg-card-subtle);">
-        <div style="display:flex; align-items:center; gap:0.6rem;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
-          <h3 style="font-family:var(--font-heading); font-size:1.15rem; font-weight:800; color:var(--text-main); margin:0;">CCSA Algorithm Workflow Simulation</h3>
+  <!-- ─── Watch Demo Video Modal ─── -->
+  <div id="demoModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); z-index:9999; align-items:center; justify-content:center; padding:1.5rem;">
+    <div style="width:100%; max-width:920px; animation:modalPop 0.35s cubic-bezier(0.16,1,0.3,1);">
+
+      <!-- Modal Header -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+        <div style="display:flex; align-items:center; gap:0.8rem;">
+          <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,#6366f1,#8b5cf6); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 18px rgba(99,102,241,0.5);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div>
+            <div style="color:#fff; font-weight:800; font-size:1.1rem; font-family:var(--font-heading); letter-spacing:-0.02em;">CCSA &mdash; Project Demo</div>
+            <div style="color:rgba(255,255,255,0.45); font-size:0.78rem; margin-top:2px;">College Counselling Seat Allocator &middot; DAA Project</div>
+          </div>
         </div>
-        <button id="closeDemoBtn" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); line-height:1;">&times;</button>
+        <button id="closeDemoBtn" aria-label="Close video demo" title="Close (Esc)" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:50%; width:42px; height:42px; cursor:pointer; color:#fff; font-size:1.3rem; display:flex; align-items:center; justify-content:center; transition:background 0.2s, transform 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.2)';this.style.transform='scale(1.08)'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.transform='scale(1)'">&times;</button>
       </div>
-      <div style="padding:1.75rem;">
-        <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem;">
-          Watch how student ranks, reservation categories, and college preferences are evaluated in real-time using Greedy &amp; Backtracking routines:
-        </p>
-        <div style="background:var(--bg-page); border:1px solid var(--border-subtle); border-radius:16px; padding:1.25rem; font-family:var(--font-mono); font-size:0.85rem; line-height:1.7;">
-          <div style="color:var(--accent-cyan); font-weight:700;">[1] Loading 1,000 TS EAMCET Candidates (Rank 412 to 248,510)... Done.</div>
-          <div style="color:var(--accent-purple); font-weight:700;">[2] Indexing 1,033 Official 2021 Final Phase Cutoff Thresholds... Done.</div>
-          <div style="color:var(--primary); font-weight:700;">[3] Simulating Candidate: STU_0001 (Rank #412 | Category: BC-B)</div>
-          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 1: JNTUH - CSE &rarr; Closing Rank 850 &rarr; <span style="color:#059669; font-weight:700;">Eligible &amp; Seat Allocated!</span></div>
-          <div style="color:var(--primary); font-weight:700; margin-top:0.4rem;">[4] Simulating Candidate: STU_0452 (Rank #42,100 | Category: OC)</div>
-          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 1: OUCE - CSE &rarr; Cutoff 1,200 &rarr; <span style="color:#ef4444;">Cutoff Exceeded</span></div>
-          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 2: CBIT - IT &rarr; Cutoff 8,500 &rarr; <span style="color:#ef4444;">Cutoff Exceeded</span></div>
-          <div style="padding-left:1.5rem; color:var(--text-muted);">&bull; Preference 3: VNRVJIET - ECE &rarr; Cutoff 44,800 &rarr; <span style="color:#059669; font-weight:700;">Cutoff Satisfied &rarr; Seat Reserved!</span></div>
-        </div>
-        <div style="margin-top:1.5rem; display:flex; justify-content:flex-end; gap:1rem;">
-          <button id="closeDemoBtn2" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); color:var(--text-main); font-weight:600; padding:0.6rem 1.25rem; border-radius:10px; cursor:pointer;">Close</button>
-          <a href="login.html" class="btn-hero-primary" style="padding:0.6rem 1.5rem; font-size:0.9rem; text-decoration:none;">Open Full Simulator &rarr;</a>
+
+      <!-- 16:9 Video Container -->
+      <div style="position:relative; width:100%; padding-bottom:56.25%; border-radius:18px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,0.75); border:1px solid rgba(255,255,255,0.08);">
+        <!--
+          TO USE YOUR OWN VIDEO:
+          Replace the YouTube video ID in data-src below.
+          Format: https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&rel=0
+        -->
+        <iframe
+          id="demoVideoFrame"
+          style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"
+          src=""
+          data-src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1&color=white&showinfo=0"
+          title="CCSA Project Demo Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:1rem; flex-wrap:wrap; gap:0.75rem;">
+        <p style="color:rgba(255,255,255,0.38); font-size:0.8rem; margin:0;">&#127891; Greedy &amp; Backtracking Algorithms &middot; Telangana EAMCET 2021 Real Cutoff Data</p>
+        <div style="display:flex; gap:0.75rem; align-items:center;">
+          <button id="closeDemoBtn2" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.8); font-weight:600; padding:0.55rem 1.2rem; border-radius:10px; cursor:pointer; font-size:0.87rem; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">Close</button>
+          <a href="login.html" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; font-weight:700; padding:0.55rem 1.5rem; border-radius:10px; text-decoration:none; font-size:0.87rem; box-shadow:0 4px 14px rgba(99,102,241,0.45); display:inline-flex; align-items:center; gap:0.4rem; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Open Simulator &rarr;</a>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -502,22 +518,43 @@
       applyTheme(next);
     });
 
-    // Watch Demo Modal Triggers
+    // Watch Demo Video Modal
     const demoModal = document.getElementById('demoModal');
     const btnOpenDemo = document.getElementById('btnOpenDemoModal');
     const btnCloseDemo = document.getElementById('closeDemoBtn');
     const btnCloseDemo2 = document.getElementById('closeDemoBtn2');
+    const demoFrame = document.getElementById('demoVideoFrame');
+
+    function openDemoModal(e) {
+      if (e) e.preventDefault();
+      // Load the iframe src only when opening (lazy load)
+      if (demoFrame && !demoFrame.src) {
+        demoFrame.src = demoFrame.getAttribute('data-src');
+      }
+      demoModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDemoModal() {
+      demoModal.style.display = 'none';
+      document.body.style.overflow = '';
+      // Stop video by clearing src, reset for next open
+      if (demoFrame) {
+        demoFrame.src = '';
+      }
+    }
 
     if (btnOpenDemo && demoModal) {
-      btnOpenDemo.addEventListener('click', (e) => {
-        e.preventDefault();
-        demoModal.style.display = 'flex';
-      });
-      [btnCloseDemo, btnCloseDemo2].forEach(btn => {
-        if (btn) btn.addEventListener('click', () => demoModal.style.display = 'none');
-      });
+      btnOpenDemo.addEventListener('click', openDemoModal);
+      if (btnCloseDemo) btnCloseDemo.addEventListener('click', closeDemoModal);
+      if (btnCloseDemo2) btnCloseDemo2.addEventListener('click', closeDemoModal);
+      // Close on overlay click
       demoModal.addEventListener('click', (e) => {
-        if (e.target === demoModal) demoModal.style.display = 'none';
+        if (e.target === demoModal) closeDemoModal();
+      });
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && demoModal.style.display === 'flex') closeDemoModal();
       });
     }
 
